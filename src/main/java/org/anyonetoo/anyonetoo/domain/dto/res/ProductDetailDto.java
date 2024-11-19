@@ -3,7 +3,11 @@ package org.anyonetoo.anyonetoo.domain.dto.res;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+import org.anyonetoo.anyonetoo.domain.entity.Image;
 import org.anyonetoo.anyonetoo.domain.entity.Product;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Schema(description = "특정 상품 DTO - 정보")
 @Getter
@@ -23,18 +27,22 @@ public class ProductDetailDto {
     private Long price;
 
     @Schema(description = "상품 이미지 url", example = "https://bucket-name.s3.region.amazonaws.com/folder/image.jpg")
-    private String imgUrl;
+    private List<String> imgUrl;
 
     @Schema(description = "판매자 이름", example = "김옥자")
     private String sellerName;
 
     public static ProductDetailDto from(Product product){
+        List<String> imgUrls = product.getImages().stream()
+                .map(Image::getImageUrl)
+                .toList();
+
         return ProductDetailDto.builder()
                 .productId(product.getProductId())
                 .title(product.getTitle())
                 .content(product.getContent())
                 .price(product.getPrice())
-                .imgUrl(product.getImgUrl())
+                .imgUrl(imgUrls)
                 .sellerName(product.getSeller().getName())
                 .build();
     }

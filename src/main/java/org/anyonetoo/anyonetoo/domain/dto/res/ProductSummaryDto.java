@@ -30,7 +30,7 @@ public class ProductSummaryDto {
                 .productId(product.getProductId())
                 .title(product.getTitle())
                 .price(product.getPrice())
-                .imgUrl(product.getImgUrl())
+                .imgUrl(product.getImages().get(1).getImageUrl())
                 .sellerName(product.getSeller().getName())
                 .build();
     }

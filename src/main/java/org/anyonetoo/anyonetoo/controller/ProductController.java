@@ -3,8 +3,11 @@ package org.anyonetoo.anyonetoo.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.*;
+import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,8 @@ public class ProductController {
     // TODO (4) - 상품 - 상품 삭제 ✅
     // TODO (5) - 상품 - 상품 검색 ✅
     // TODO (6) - 상품 - 대댓글 조회 ✅
+    // TODO (7) - 상품 - 댓글 작성
+    // TODO (8) - 상품 - 대댓글 작성
 
     private final ProductService productService;
 
@@ -46,6 +51,16 @@ public class ProductController {
                                                                           @RequestParam Long mainCommentId){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.getSubComments(productId, mainCommentId), "상품 대댓글 조회 성공"));
     }
+
+    @Operation(summary = "상품 등록")
+    @ApiResponse(responseCode = "201", description = "상품 등록 성공")
+    @PostMapping()
+    public ResponseEntity<ResponseDto<Long>> saveProduct(HttpServletRequest req,
+                                                         @RequestBody ProductRequestDto request){
+        User user = (User) req.getAttribute("user");
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveProduct(user.getUserId(), request), "상품 등록 성공"));
+    }
+
 
     @Operation(summary = "상품 삭제")
     @ApiResponse(responseCode = "200", description = "상품 삭제 완료")
