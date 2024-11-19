@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.req.UpdateCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.*;
 import org.anyonetoo.anyonetoo.domain.entity.Image;
 import org.anyonetoo.anyonetoo.domain.entity.Product;
@@ -98,5 +99,15 @@ public class ProductService {
     @Transactional
     public Long saveSubComment(Long userId, SubCommentRequestDto request){
         return commentService.saveSubComment(userId, request);
+    }
+
+    @Transactional
+    public Long updateComment(Long userId, UpdateCommentRequestDto request){
+        return commentService.updateComment(userId, request);
+    }
+
+    @Transactional
+    public Long deleteComment(Long userId, Long commentId){
+        return commentService.deleteComment(userId, commentId);
     }
 }

@@ -44,4 +44,9 @@ public class Comment extends BaseEntity {
         this.product = product;
         this.user = user;
     }
+
+    public void updateComment(String content, boolean isSecret){
+        this.content = content;
+        this.isSecret = isSecret;
+    }
 }
