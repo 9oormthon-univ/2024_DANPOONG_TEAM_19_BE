@@ -10,10 +10,13 @@ import java.time.LocalDateTime;
 @Schema(description = "본댓글 조회 Response DTO")
 @Getter
 @Builder
-public class MainCommentDto {
+public class MainCommentResponseDto {
 
     @Schema(description = "댓글 아이디", example = "1")
     private Long commentId;
+
+    @Schema(description = "상품 아이디", example = "1")
+    private Long productId;
 
     @Schema(description = "작성자", example = "옥자")
     private String username;
@@ -25,9 +28,10 @@ public class MainCommentDto {
     @Schema(description = "작성일", example = "2024-10-22")
     private LocalDateTime createdAt;
 
-    public static MainCommentDto from(Comment comment){
-        return MainCommentDto.builder()
+    public static MainCommentResponseDto from(Comment comment){
+        return MainCommentResponseDto.builder()
                 .commentId(comment.getCommentId())
+                .productId(comment.getProduct().getProductId())
                 .username(comment.getProduct().getSeller().getName())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())

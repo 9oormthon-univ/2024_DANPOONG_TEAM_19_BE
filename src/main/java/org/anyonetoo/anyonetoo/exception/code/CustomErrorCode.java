@@ -12,6 +12,12 @@ public enum CustomErrorCode implements ErrorCode{
     // Product
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Product Not Found"),
 
+    // User
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "User Not Found"),
+
+    // Comment
+    MAIN_COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Main Comment Not Found"),
+
     // Seller
     SELLER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Seller Not Found"),
     ;

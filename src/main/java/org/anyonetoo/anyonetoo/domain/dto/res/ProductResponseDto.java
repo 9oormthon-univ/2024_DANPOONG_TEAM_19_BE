@@ -11,5 +11,5 @@ import java.util.List;
 @Builder
 public class ProductResponseDto {
     private ProductDetailDto productDetail;
-    private List<MainCommentDto> mainComments;
+    private List<MainCommentResponseDto> mainComments;
 }

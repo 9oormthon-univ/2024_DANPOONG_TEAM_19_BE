@@ -2,7 +2,9 @@ package org.anyonetoo.anyonetoo.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.*;
 import org.anyonetoo.anyonetoo.domain.entity.Image;
 import org.anyonetoo.anyonetoo.domain.entity.Product;
@@ -46,7 +48,7 @@ public class ProductService {
     }
 
     @Transactional
-    public List<SubCommentDto> getSubComments(Long productId, Long mainCommentId){
+    public List<SubCommentResponseDto> getSubComments(Long productId, Long mainCommentId){
         return commentService.getSubComments(productId, mainCommentId);
     }
 
@@ -86,5 +88,15 @@ public class ProductService {
 
         Product savedProduct = productRepository.save(product);
         return savedProduct.getProductId();
+    }
+
+    @Transactional
+    public Long saveMainComment(Long userId, MainCommentRequestDto request){
+        return commentService.saveMainComment(userId, request);
+    }
+
+    @Transactional
+    public Long saveSubComment(Long userId, SubCommentRequestDto request){
+        return commentService.saveSubComment(userId, request);
     }
 }
