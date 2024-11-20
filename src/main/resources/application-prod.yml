@@ -1,41 +1,41 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
-
-  jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
-        jdbc:
-          time_zone: Asia/Seoul
-
-  cloud:
-    aws:
-      credentials:
-        accessKey: ${AWS_ACCESS_KEY}
-        secretKey: ${AWS_SECRET_KEY}
-      region:
-        static: ${AWS_REGION}
-      s3:
-        bucket: ${BUCKET_NAME}
-      stack:
-        auto: false
-
-kakao:
-  api:
-    key: ${KAKAO_API_KEY}
-    base-url: ${KAKAO_BASE_URL}
-
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: ${MYSQL_URL}
+#    username: ${MYSQL_USERNAME}
+#    password: ${MYSQL_PASSWORD}
+#
+#  jpa:
+#    database: mysql
+#    database-platform: org.hibernate.dialect.MySQLDialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.MySQLDialect
+#        jdbc:
+#          time_zone: Asia/Seoul
+#
+#  cloud:
+#    aws:
+#      credentials:
+#        accessKey: ${AWS_ACCESS_KEY}
+#        secretKey: ${AWS_SECRET_KEY}
+#      region:
+#        static: ${AWS_REGION}
+#      s3:
+#        bucket: ${BUCKET_NAME}
+#      stack:
+#        auto: false
+#
+#kakao:
+#  api:
+#    key: ${KAKAO_API_KEY}
+#    base-url: ${KAKAO_BASE_URL}
+#
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
