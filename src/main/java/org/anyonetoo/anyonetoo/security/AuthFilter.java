@@ -26,7 +26,8 @@ public class AuthFilter implements Filter {
         String url = httpServletRequest.getRequestURI();
         log.info(url);
         
-        if (url.startsWith("/css") || url.startsWith("/js") || url.startsWith("/auth") || url.startsWith("/api/core/s3") || url.startsWith("/swagger-ui/**") || url.equals("/favicon.ico")) {
+        if (url.startsWith("/css") || url.startsWith("/js") || url.startsWith("/auth") || url.startsWith("/api/core/s3") || url.startsWith("/swagger-ui/**") || url.equals("/favicon.ico"),
+           url.startsWith("/swagger-ui/")) {
             log.info("인증처리가 필요없는 URL");
             chain.doFilter(request, response);
         } else {
