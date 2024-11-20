@@ -5,9 +5,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.anyonetoo.anyonetoo.domain.Consumer;
-import org.anyonetoo.anyonetoo.domain.User;
-import org.anyonetoo.anyonetoo.repository.ConsumerRepository;
+import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.repository.UserRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -57,7 +55,8 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String url = httpServletRequest.getRequestURI();
 
-        if (url.startsWith("/signup") || url.startsWith("/css") || url.startsWith("/js") || url.startsWith("/login") || url.startsWith("/verifyMail")|| url.startsWith("/auth")) {
+        if (url.startsWith("/signup") || url.startsWith("/css") || url.startsWith("/js")
+                || url.startsWith("/login") || url.startsWith("/verifyMail")|| url.startsWith("/auth") || url.startsWith("/api/core/s3")) {
             log.info("인증처리가 필요없는 URL");
             chain.doFilter(request, response);
         } else {
@@ -70,7 +69,7 @@ public class AuthFilter implements Filter {
                     throw new IllegalArgumentException("Token Error");
                 }
                 Claims info = jwtUtil.getUserInfoFromToken(token);
-                User user = userRepository.findById(info.getSubject()).orElseThrow(() ->
+                User user = userRepository.findById(Long.valueOf(info.getSubject())).orElseThrow(() ->
                         new NullPointerException("Not Found User"));
 
                 request.setAttribute("user", user);

@@ -92,13 +92,13 @@ public class ProductService {
     }
 
     @Transactional
-    public Long saveMainComment(Long userId, MainCommentRequestDto request){
-        return commentService.saveMainComment(userId, request);
+    public Long saveMainComment(Long userId, Long productId, MainCommentRequestDto request){
+        return commentService.saveMainComment(userId, productId, request);
     }
 
     @Transactional
-    public Long saveSubComment(Long userId, SubCommentRequestDto request){
-        return commentService.saveSubComment(userId, request);
+    public Long saveSubComment(Long userId, Long productId, SubCommentRequestDto request){
+        return commentService.saveSubComment(userId, productId, request);
     }
 
     @Transactional

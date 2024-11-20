@@ -2,7 +2,6 @@ package org.anyonetoo.anyonetoo.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
@@ -41,7 +40,7 @@ public class ProductController {
     // 상품 관련
     @Operation(summary = "전체 상품 조회")
     @ApiResponse(responseCode = "200", description = "전체 상품 조회 성공")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ResponseDto<List<ProductSummaryDto>>> getAllProduct(){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.getAllProduct(), "전체 상품 조회 성공"));
     }
@@ -80,7 +79,7 @@ public class ProductController {
     // 댓글 관련
     @Operation(summary = "대댓글 조회")
     @ApiResponse(responseCode = "200", description = "대댓글 조회 성공")
-    @GetMapping("/{productId}")
+    @GetMapping("/{productId}/comment")
     public ResponseEntity<ResponseDto<List<SubCommentResponseDto>>> getSubComment(@PathVariable Long productId,
                                                                                   @RequestParam Long mainCommentId){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.getSubComments(productId, mainCommentId), "상품 대댓글 조회 성공"));
@@ -88,20 +87,22 @@ public class ProductController {
 
     @Operation(summary = "본댓글 등록")
     @ApiResponse(responseCode = "201", description = "본댓글 등록 완료")
-    @PostMapping("/comment")
+    @PostMapping("/{productId}/comment")
     public ResponseEntity<ResponseDto<Long>> saveMainComment(HttpServletRequest req,
+                                                         @PathVariable Long productId,
                                                          @RequestBody MainCommentRequestDto request){
         User user = (User) req.getAttribute("user");
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveMainComment(user.getUserId(), request), "본댓글 등록 성공"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveMainComment(user.getUserId(), productId, request), "본댓글 등록 성공"));
     }
 
     @Operation(summary = "대댓글 등록")
     @ApiResponse(responseCode = "201", description = "대댓글 등록 완료")
-    @PostMapping("/re-comment")
+    @PostMapping("/{productId}/re-comment")
     public ResponseEntity<ResponseDto<Long>> saveSubComment(HttpServletRequest req,
+                                                            @PathVariable Long productId,
                                                             @RequestBody SubCommentRequestDto request){
         User user = (User) req.getAttribute("user");
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveSubComment(user.getUserId(), request), "대댓글 등록 성공"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveSubComment(user.getUserId(), productId, request), "대댓글 등록 성공"));
     }
 
     @Operation(summary = "댓글 수정")
@@ -115,7 +116,7 @@ public class ProductController {
 
     @Operation(summary = "댓글 삭제")
     @ApiResponse(responseCode = "204", description = "댓글 삭제 완료")
-    @DeleteMapping("/coment/{commentId}")
+    @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<ResponseDto<Long>> deleteComment(HttpServletRequest req,
                                                            @PathVariable Long commentId){
         User user = (User) req.getAttribute("name");

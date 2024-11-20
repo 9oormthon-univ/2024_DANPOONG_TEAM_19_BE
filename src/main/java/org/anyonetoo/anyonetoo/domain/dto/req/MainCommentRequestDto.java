@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 public class MainCommentRequestDto {
 
-    @Schema(description = "상품 아이디", example = "1")
-    private Long productId;
-
     @Schema(description = "댓글 내용", example = "헐! 사고싶어요!")
     private String content;
 

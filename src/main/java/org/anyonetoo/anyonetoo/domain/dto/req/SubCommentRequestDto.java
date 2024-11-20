@@ -9,9 +9,6 @@ import lombok.Getter;
 @Builder
 public class SubCommentRequestDto {
 
-    @Schema(description = "상품 아이디", example = "1")
-    private Long productId;
-
     @Schema(description = "본댓글 아이디", example = "1")
     private Long mainCommentId;
 

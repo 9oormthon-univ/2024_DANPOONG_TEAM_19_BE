@@ -1,64 +1,50 @@
 package org.anyonetoo.anyonetoo.service;
 
-import com.amazonaws.HttpMethod;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.Headers;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
-import java.net.URL;
-import java.util.Date;
+import java.time.Duration;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class S3Service {
 
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
-    private final AmazonS3 amazonS3;
+    private final S3Client s3Client;
 
-    public String getPresignedUrl(String fileName){
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePresignedUrlRequest(bucket, fileName);
+    public String getPresignedUrl(String fileName) {
+        String path = createPath(fileName);
 
-        URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
-        return url.toString();
-    }
+        S3Presigner presigner = S3Presigner.builder()
+                .region(s3Client.serviceClientConfiguration().region())
+                .credentialsProvider(s3Client.serviceClientConfiguration().credentialsProvider())
+                .build();
 
-    private GeneratePresignedUrlRequest getGeneratePreSignedUrlRequest(String bucket, String fileName) {
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucket, fileName)
-                        .withMethod(HttpMethod.PUT)
-                        .withExpiration(getPreSignedUrlExpiration());
-        generatePresignedUrlRequest.addRequestParameter(
-                Headers.S3_CANNED_ACL,
-                CannedAccessControlList.PublicRead.toString());
-        return generatePresignedUrlRequest;
-    }
+        PutObjectRequest objectRequest = PutObjectRequest.builder()
+                .bucket(bucket)
+                .key(path)
+                .acl("public-read")  // CannedACL 설정
+                .build();
 
-    private GeneratePresignedUrlRequest getGeneratePresignedUrlRequest(String bucket, String fileName){
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, fileName)
-                .withMethod(HttpMethod.PUT)
-                .withExpiration(getPreSignedUrlExpiration());
+        PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(5))  // 5분 만료
+                .putObjectRequest(objectRequest)
+                .build();
 
-        generatePresignedUrlRequest.addRequestParameter(
-                Headers.S3_CANNED_ACL,
-                CannedAccessControlList.PublicRead.toString());
+        PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
 
-        return generatePresignedUrlRequest;
-    }
+        presigner.close();
 
-    private Date getPreSignedUrlExpiration() {
-        Date expiration = new Date();
-
-        long expTimeMillis = expiration.getTime() + 1000 * 60 * 5;
-        expiration.setTime(expTimeMillis);
-
-        return expiration;
+        return presignedRequest.url().toString();
     }
 
     private String createFileId() {

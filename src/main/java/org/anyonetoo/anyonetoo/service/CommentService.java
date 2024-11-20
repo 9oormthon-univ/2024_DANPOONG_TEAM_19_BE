@@ -40,9 +40,9 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    public Long saveMainComment(Long userId, MainCommentRequestDto request){
+    public Long saveMainComment(Long userId, Long productId, MainCommentRequestDto request){
 
-        Product product = productRepository.findById(request.getProductId())
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
 
         User user = userRepository.findById(userId)
@@ -60,9 +60,9 @@ public class CommentService {
         return savedComment.getCommentId();
     }
 
-    public Long saveSubComment(Long userId, SubCommentRequestDto request){
+    public Long saveSubComment(Long userId, Long productId, SubCommentRequestDto request){
 
-        Product product = productRepository.findById(request.getProductId())
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
 
         User user = userRepository.findById(userId)
