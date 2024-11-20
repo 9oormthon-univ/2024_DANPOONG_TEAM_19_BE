@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum CustomErrorCode implements ErrorCode{
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "Internal Server Error"),
+    INVALID_PARAMS(HttpStatus.BAD_REQUEST, 400, "Request Validation Failed"),
 
     // Product
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Product Not Found"),

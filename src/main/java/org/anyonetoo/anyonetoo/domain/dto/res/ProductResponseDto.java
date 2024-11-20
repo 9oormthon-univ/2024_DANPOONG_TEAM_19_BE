@@ -10,6 +10,9 @@ import java.util.List;
 @Getter
 @Builder
 public class ProductResponseDto {
+    @Schema(description = "상품 상세정보")
     private ProductDetailDto productDetail;
+
+    @Schema(description = "상품 댓글")
     private List<MainCommentResponseDto> mainComments;
 }

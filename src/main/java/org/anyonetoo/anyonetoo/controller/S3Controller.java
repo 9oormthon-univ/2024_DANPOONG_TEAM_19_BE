@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class S3Controller {
     private final S3Service s3Service;
 
-
     @Operation(summary = "S3 PresignedUrl 발급")
     @ApiResponse(responseCode = "200", description = "Url 발급 성공")
     @GetMapping("/presignedUrl")
