@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_URL}/AnyoneToo?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useSSL=false
+    url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
