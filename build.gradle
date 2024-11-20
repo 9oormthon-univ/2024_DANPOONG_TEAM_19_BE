@@ -37,6 +37,10 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.0'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.0'
 
+    //webClient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+
     // DB
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'

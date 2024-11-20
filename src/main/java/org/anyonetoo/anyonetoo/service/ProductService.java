@@ -2,6 +2,7 @@ package org.anyonetoo.anyonetoo.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.ProductResponseDTO;
 import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
@@ -117,6 +118,20 @@ public class ProductService {
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
 
         return purchaseService.savePurchase(userId, product);
+    }
+
+    public List<ProductResponseDTO> showAllProducts(Long sellerId) {
+        List<Product> products = productRepository.findBySellerId(sellerId);
+
+        // 상품이 없으면 예외 처리
+        if (products.isEmpty()) {
+            throw new RuntimeException("상품이 존재하지 않습니다");
+        }
+
+        // Product 엔티티 리스트를 ProductResponseDTO 리스트로 변환하여 반환
+        return products.stream()
+                .map(ProductResponseDTO::from)
+                .collect(Collectors.toList());
     }
 
 }

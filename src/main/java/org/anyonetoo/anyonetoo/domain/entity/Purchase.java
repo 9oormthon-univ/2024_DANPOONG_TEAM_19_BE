@@ -40,4 +40,10 @@ public class Purchase extends BaseEntity {
         this.product = product;
         this.consumer = consumer;
     }
+    public void updateStatus(Status newStatus) {
+        if (this.status != newStatus) {
+            this.status = newStatus;
+
+        }
+    }
 }

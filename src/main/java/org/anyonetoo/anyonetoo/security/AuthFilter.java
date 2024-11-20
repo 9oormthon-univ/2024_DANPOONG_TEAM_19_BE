@@ -20,43 +20,12 @@ public class AuthFilter implements Filter {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    //    @Override
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-//        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-//        String url = httpServletRequest.getRequestURI();
-//
-//        if (url.startsWith("/signup") || url.startsWith("/css") || url.startsWith("/js") || url.startsWith("/login") || url.startsWith("/verifyMail")|| url.startsWith("/kakao")) {
-//            log.info("인증처리가 필요없는 URL");
-//            chain.doFilter(request, response);
-//        } else {
-//            String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
-//
-//            if (StringUtils.hasText(tokenValue)) {
-//                String token = jwtUtil.substringToken(tokenValue);
-//
-//                if (!jwtUtil.validateToken(token)) {
-//                    throw new IllegalArgumentException("Token Error");
-//                }
-//
-//                Claims info = jwtUtil.getUserInfoFromToken(token);
-//
-//                Consumer consumer = userRepository.findById((String)info.get("userId")).orElseThrow(() ->
-//                        new NullPointerException("Not Found User"));
-//
-//                request.setAttribute("user", consumer);
-//                chain.doFilter(request, response);
-//            } else {
-//                throw new IllegalArgumentException("Not Found Token");
-//            }
-//        }
-//    }
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String url = httpServletRequest.getRequestURI();
 
-        if (url.startsWith("/signup") || url.startsWith("/css") || url.startsWith("/js")
-                || url.startsWith("/login") || url.startsWith("/verifyMail")|| url.startsWith("/auth") || url.startsWith("/api/core/s3")) {
+        if (url.startsWith("/css") || url.startsWith("/js") || url.startsWith("/auth") || url.startsWith("/api/core/s3")) {
             log.info("인증처리가 필요없는 URL");
             chain.doFilter(request, response);
         } else {
