@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByTitleContaining(String title);
+    List<Product> findBySellerId(Long sellerId);
 }

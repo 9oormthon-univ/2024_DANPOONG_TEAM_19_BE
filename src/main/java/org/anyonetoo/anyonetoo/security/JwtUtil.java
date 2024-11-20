@@ -48,24 +48,4 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-//    public void addToken(String userId, HttpServletResponse res) {
-//        Date date = new Date();
-//        String tokenStr = BEARER_PREFIX +
-//                Jwts.builder()
-//                        .setSubject(userId)
-//                        .setExpiration(new Date(date.getTime() + 30 * 60 * 1000L))
-//                        .signWith(key, signatureAlgorithm)
-//                        .compact();
-//        res.setHeader(AUTHORIZATION_HEADER, tokenStr);
-//    }
-
-//    public Long getUserIdFromToken(String token) {
-//        Claims claims = Jwts.parser()
-//                .setSigningKey(key)
-//                .parseClaimsJws(token)
-//                .getBody();
-//
-//        // "userId"가 Integer 타입인 경우
-//        return (Long) claims.get("userId");
-//    }
 }

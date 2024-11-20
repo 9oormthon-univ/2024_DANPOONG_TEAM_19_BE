@@ -1,9 +1,7 @@
 package org.anyonetoo.anyonetoo.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.anyonetoo.anyonetoo.domain.common.BaseEntity;
 import org.anyonetoo.anyonetoo.domain.mapping.SellerPrefer;
 
@@ -12,6 +10,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Seller")
 public class Seller extends BaseEntity {
