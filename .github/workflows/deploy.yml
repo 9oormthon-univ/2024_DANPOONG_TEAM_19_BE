@@ -73,10 +73,10 @@ jobs:
             if [ "$(docker ps -aq -f name=anyonetoo-server)" ]
             then
               echo "[ spring is running ]"
-              docker stop server
-              docker rm server
+              docker stop anyonetoo-server
+              docker rm anyonetoo-server
             else
               echo "[ spring is not running ]"
             fi
             
-            docker run -d --name server -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/anyonetoo-server
+            docker run -d --name anyonetoo-server -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/anyonetoo-server
