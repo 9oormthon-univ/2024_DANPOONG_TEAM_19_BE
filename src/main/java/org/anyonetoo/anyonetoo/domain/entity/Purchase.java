@@ -2,6 +2,7 @@ package org.anyonetoo.anyonetoo.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.common.BaseEntity;
@@ -32,4 +33,11 @@ public class Purchase extends BaseEntity {
 
     @OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Alarm> alarms = new ArrayList<>();
+
+    @Builder
+    public Purchase(Status status, Product product, Consumer consumer){
+        this.status = status;
+        this.product = product;
+        this.consumer = consumer;
+    }
 }

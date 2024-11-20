@@ -2,6 +2,7 @@ package org.anyonetoo.anyonetoo.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
@@ -32,14 +33,12 @@ public class ProductController {
     // TODO (8) - 상품 - 대댓글 작성 ✅
     // TODO (9) - 상품 - 댓글 수정 ✅
     // TODO (10) - 상품 - 댓글 삭제 ✅
-    // TODO (11) - 상품 - 상품 수정
-    // TODO (12) - 상품 - 구매 요청
+    // TODO (11) - 상품 - 구매 요청 ✅
 
     private final ProductService productService;
     private final S3Service s3Service;
 
     // 상품 관련
-
     @Operation(summary = "전체 상품 조회")
     @ApiResponse(responseCode = "200", description = "전체 상품 조회 성공")
     @GetMapping
@@ -121,5 +120,14 @@ public class ProductController {
                                                            @PathVariable Long commentId){
         User user = (User) req.getAttribute("name");
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.deleteComment(user.getUserId(), commentId), "댓글 삭제 완료"));
+    }
+
+    @Operation(summary = "구매 요청")
+    @ApiResponse(responseCode = "200", description = "구매 요청 전송 완료")
+    @PostMapping("/{productId}/orders")
+    public ResponseEntity<ResponseDto<Long>> createOrder(HttpServletRequest req,
+                                                         @PathVariable Long productId){
+        User user = (User) req.getAttribute("name");
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.createOrder(user.getUserId(), productId), "구매 요청 전송 완료"));
     }
 }

@@ -7,11 +7,10 @@ import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.UpdateCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.*;
-import org.anyonetoo.anyonetoo.domain.entity.Image;
-import org.anyonetoo.anyonetoo.domain.entity.Product;
-import org.anyonetoo.anyonetoo.domain.entity.Seller;
+import org.anyonetoo.anyonetoo.domain.entity.*;
 import org.anyonetoo.anyonetoo.exception.RestApiException;
 import org.anyonetoo.anyonetoo.exception.code.CustomErrorCode;
+import org.anyonetoo.anyonetoo.repository.ConsumerRepository;
 import org.anyonetoo.anyonetoo.repository.ProductRepository;
 import org.anyonetoo.anyonetoo.repository.SellerRepository;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,9 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
 
-    private final CommentService commentService;
 
+    private final CommentService commentService;
+    private final PurchaseService purchaseService;
     @Transactional
     public List<ProductSummaryDto> getAllProduct(){
         return productRepository.findAll().stream()
@@ -110,4 +110,13 @@ public class ProductService {
     public Long deleteComment(Long userId, Long commentId){
         return commentService.deleteComment(userId, commentId);
     }
+
+    @Transactional
+    public Long createOrder(Long userId, Long productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
+
+        return purchaseService.savePurchase(userId, product);
+    }
+
 }

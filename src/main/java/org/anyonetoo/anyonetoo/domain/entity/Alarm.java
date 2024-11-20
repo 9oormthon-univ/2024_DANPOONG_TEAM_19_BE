@@ -2,6 +2,7 @@ package org.anyonetoo.anyonetoo.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.common.BaseEntity;
@@ -21,4 +22,10 @@ public class Alarm extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "purchase_id")
     private Purchase purchase;
+
+    @Builder
+    public Alarm(String content, Purchase purchase){
+        this.content = content;
+        this.purchase = purchase;
+    }
 }
