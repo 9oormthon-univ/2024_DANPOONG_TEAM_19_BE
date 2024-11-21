@@ -29,6 +29,7 @@ public class AuthFilter implements Filter {
         if (true) {
             log.info("인증처리가 필요없는 URL");
             chain.doFilter(request, response);
+            return;
         } else {
             String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
 
