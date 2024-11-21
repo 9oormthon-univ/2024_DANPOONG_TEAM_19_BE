@@ -57,8 +57,10 @@ public class ProductController {
     @Operation(summary = "상품 삭제")
     @ApiResponse(responseCode = "200", description = "상품 삭제 완료")
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ResponseDto<Long>> deleteProduct(@PathVariable Long productId){
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.deleteProduct(productId), "상품 삭제 성공"));
+    public ResponseEntity<ResponseDto<Long>> deleteProduct(HttpServletRequest req,
+                                                            @PathVariable Long productId){
+        User user = (User) req.getAttribute("user");
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.deleteProduct(user.getUserId(), productId), "상품 삭제 성공"));
     }
 
     @Operation(summary = "상품 검색")

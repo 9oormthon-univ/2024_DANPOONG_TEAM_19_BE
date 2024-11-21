@@ -14,9 +14,11 @@ import org.anyonetoo.anyonetoo.exception.code.CustomErrorCode;
 import org.anyonetoo.anyonetoo.repository.ConsumerRepository;
 import org.anyonetoo.anyonetoo.repository.ProductRepository;
 import org.anyonetoo.anyonetoo.repository.SellerRepository;
+import org.anyonetoo.anyonetoo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
-
+    private final UserRepository userRepository;
 
     private final CommentService commentService;
     private final PurchaseService purchaseService;
@@ -55,7 +57,12 @@ public class ProductService {
     }
 
     @Transactional
-    public Long deleteProduct(Long productId){
+    public Long deleteProduct(Long userId, Long productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
+
+        User user =  userRepository.findBy
+
         productRepository.deleteById(productId);
         return productId;
     }

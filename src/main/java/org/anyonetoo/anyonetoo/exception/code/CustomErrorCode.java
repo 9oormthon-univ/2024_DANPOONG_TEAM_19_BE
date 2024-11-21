@@ -17,7 +17,7 @@ public enum CustomErrorCode implements ErrorCode{
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "User Not Found"),
 
     // Comment
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Main Comment Not Found"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Comment Not Found"),
     NO_PERMISSION_FOR_COMMENT(HttpStatus.FORBIDDEN, 403, "No Permission For Comment"),
 
     // Seller
