@@ -22,7 +22,12 @@ public enum CustomErrorCode implements ErrorCode{
 
     // Seller
     SELLER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Seller Not Found"),
+    CONSUMER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Consumer Not Found"),
+
+    PURCHASE_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Purchase Not Found"),
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Purchase Not Found"),
     ;
+
 
     private final HttpStatus httpStatus;
     private final Integer code;

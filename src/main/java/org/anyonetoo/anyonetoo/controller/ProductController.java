@@ -15,6 +15,7 @@ import org.anyonetoo.anyonetoo.service.ProductService;
 import org.anyonetoo.anyonetoo.service.S3Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,9 +48,9 @@ public class ProductController {
     @Operation(summary = "상품 등록")
     @ApiResponse(responseCode = "201", description = "상품 등록 성공")
     @PostMapping()
-    public ResponseEntity<ResponseDto<Long>> saveProduct(HttpServletRequest req,
+    public ResponseEntity<ResponseDto<Long>> saveProduct(@AuthenticationPrincipal User user,
                                                          @Valid @RequestBody ProductRequestDto request){
-        User user = (User) req.getAttribute("user");
+        System.out.println(user.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveProduct(user.getUserId(), request), "상품 등록 성공"));
     }
 
@@ -82,38 +83,34 @@ public class ProductController {
     @Operation(summary = "본댓글 등록")
     @ApiResponse(responseCode = "201", description = "본댓글 등록 완료")
     @PostMapping("/{productId}/comment")
-    public ResponseEntity<ResponseDto<Long>> saveMainComment(HttpServletRequest req,
-                                                         @PathVariable Long productId,
-                                                         @Valid @RequestBody MainCommentRequestDto request){
-        User user = (User) req.getAttribute("user");
+    public ResponseEntity<ResponseDto<Long>> saveMainComment(@AuthenticationPrincipal User user,
+                                                             @PathVariable Long productId,
+                                                             @Valid @RequestBody MainCommentRequestDto request){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveMainComment(user.getUserId(), productId, request), "본댓글 등록 성공"));
     }
 
     @Operation(summary = "대댓글 등록")
     @ApiResponse(responseCode = "201", description = "대댓글 등록 완료")
     @PostMapping("/{productId}/re-comment")
-    public ResponseEntity<ResponseDto<Long>> saveSubComment(HttpServletRequest req,
+    public ResponseEntity<ResponseDto<Long>> saveSubComment(@AuthenticationPrincipal User user,
                                                             @PathVariable Long productId,
                                                             @Valid @RequestBody SubCommentRequestDto request){
-        User user = (User) req.getAttribute("user");
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveSubComment(user.getUserId(), productId, request), "대댓글 등록 성공"));
     }
 
     @Operation(summary = "댓글 수정")
     @ApiResponse(responseCode = "200", description = "댓글 수정 완료")
     @PutMapping("/comment")
-    public ResponseEntity<ResponseDto<Long>> updateComment(HttpServletRequest req,
+    public ResponseEntity<ResponseDto<Long>> updateComment(@AuthenticationPrincipal User user,
                                                            @Valid @RequestBody UpdateCommentRequestDto request){
-        User user = (User) req.getAttribute("name");
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.updateComment(user.getUserId(), request), "댓글 수정 완료"));
     }
 
     @Operation(summary = "댓글 삭제")
     @ApiResponse(responseCode = "204", description = "댓글 삭제 완료")
     @DeleteMapping("/comment/{commentId}")
-    public ResponseEntity<ResponseDto<Long>> deleteComment(HttpServletRequest req,
+    public ResponseEntity<ResponseDto<Long>> deleteComment(@AuthenticationPrincipal User user,
                                                            @PathVariable Long commentId){
-        User user = (User) req.getAttribute("name");
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.deleteComment(user.getUserId(), commentId), "댓글 삭제 완료"));
     }
 
@@ -123,9 +120,8 @@ public class ProductController {
     @Operation(summary = "구매 요청")
     @ApiResponse(responseCode = "200", description = "구매 요청 전송 완료")
     @PostMapping("/{productId}/orders")
-    public ResponseEntity<ResponseDto<Long>> createOrder(HttpServletRequest req,
+    public ResponseEntity<ResponseDto<Long>> createOrder(@AuthenticationPrincipal User user,
                                                          @PathVariable Long productId){
-        User user = (User) req.getAttribute("name");
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.createOrder(user.getUserId(), productId), "구매 요청 전송 완료"));
     }
 }

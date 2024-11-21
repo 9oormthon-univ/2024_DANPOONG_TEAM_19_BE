@@ -1,14 +1,14 @@
 package org.anyonetoo.anyonetoo.config;
 
-import org.anyonetoo.anyonetoo.security.Encoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class EncoderConfig {
+public class AppConfig {
+
     @Bean
-    public Encoder encoder() {
-        return new Encoder();
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }

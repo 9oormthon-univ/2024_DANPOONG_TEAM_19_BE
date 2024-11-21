@@ -2,8 +2,9 @@ package org.anyonetoo.anyonetoo.domain.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.anyonetoo.anyonetoo.domain.Category;
-import org.anyonetoo.anyonetoo.domain.Seller;
+import org.anyonetoo.anyonetoo.domain.entity.Category;
+import org.anyonetoo.anyonetoo.domain.entity.Seller;
+
 
 @Getter
 @Setter
