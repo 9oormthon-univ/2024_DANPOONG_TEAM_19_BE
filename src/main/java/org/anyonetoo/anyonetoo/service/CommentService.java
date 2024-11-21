@@ -34,8 +34,15 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    public List<SubCommentResponseDto> getSubComments(Long productId, Long mainProductId){
-        return commentRepository.findAllSubComments(productId, mainProductId).stream()
+    public List<SubCommentResponseDto> getSubComments(Long productId, Long mainCommentId){
+
+        if(!commentRepository.existsByMainCommentId(mainCommentId))
+            throw new RestApiException(CustomErrorCode.COMMENT_NOT_FOUND);
+
+        if(!productRepository.existsById(productId))
+            throw new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND);
+
+        return commentRepository.findAllSubComments(productId, mainCommentId).stream()
                 .map(SubCommentResponseDto::from)
                 .collect(Collectors.toList());
     }

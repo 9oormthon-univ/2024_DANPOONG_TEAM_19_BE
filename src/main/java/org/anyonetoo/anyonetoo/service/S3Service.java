@@ -53,6 +53,6 @@ public class S3Service {
 
     private String createPath(String fileName) {
         String fileId = createFileId();
-        return String.format("%s", fileId + fileName);
+        return String.format("image/%s", fileId + fileName);
     }
 }
