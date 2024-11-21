@@ -12,7 +12,7 @@ public enum CustomErrorCode implements ErrorCode{
 
     // Product
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Product Not Found"),
-
+    NO_PERMISSION_FOR_DELETE_PRODUCT(HttpStatus.FORBIDDEN, 403, "No permission provided for delete this product"),
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "User Not Found"),
 
