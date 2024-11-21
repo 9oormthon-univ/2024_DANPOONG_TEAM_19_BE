@@ -36,7 +36,7 @@ public class CommentService {
 
     public List<SubCommentResponseDto> getSubComments(Long productId, Long mainCommentId){
 
-        if(commentRepository.notExistsByMainCommentId(mainCommentId))
+        if(!commentRepository.existsByMainCommentId(mainCommentId))
             throw new RestApiException(CustomErrorCode.COMMENT_NOT_FOUND);
 
         return commentRepository.findAllSubComments(productId, mainCommentId).stream()
@@ -66,7 +66,7 @@ public class CommentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
 
-        if(commentRepository.notExistsByMainCommentId(request.getMainCommentId()))
+        if(!commentRepository.existsByMainCommentId(request.getMainCommentId()))
             throw new RestApiException(CustomErrorCode.COMMENT_NOT_FOUND);
 
         Comment comment = Comment.builder()

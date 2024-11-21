@@ -17,5 +17,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("SELECT c FROM Comment c WHERE c.product.productId = :productId AND c.mainCommentId = :mainCommentId")
     List<Comment> findAllSubComments(@Param("productId") Long productId, @Param("mainCommentId") Long mainCommentId);
 
-    boolean notExistsByMainCommentId(Long mainCommentId);
+    boolean existsByMainCommentId(Long mainCommentId);
 }
