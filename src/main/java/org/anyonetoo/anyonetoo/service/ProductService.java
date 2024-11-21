@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
-    private final UserRepository userRepository;
+    private final ConsumerRepository consumerRepository;
 
     private final CommentService commentService;
     private final PurchaseService purchaseService;
@@ -61,7 +61,11 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
 
-        User user =  userRepository.findBy
+        Seller seller = sellerRepository.findByUserId(userId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(product.getSeller().getUser().getUserId(), userId))
+            throw new RestApiException(CustomErrorCode.NO_PERMISSION_FOR_DELETE_PRODUCT);
 
         productRepository.deleteById(productId);
         return productId;
