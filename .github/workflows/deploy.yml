@@ -81,5 +81,5 @@ jobs:
             
             docker run -d --name anyonetoo-server \
               -p 80:8080 \
-              -p 443:8080 \
+              -p 443:8443 \
               ${{ secrets.DOCKER_USERNAME }}/anyonetoo-server
