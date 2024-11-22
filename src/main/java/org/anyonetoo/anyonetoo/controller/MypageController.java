@@ -24,6 +24,13 @@ public class MypageController {
     private final ProductService productService;
     private final PurchaseService purchaseService;
 
+    @GetMapping("/who")
+    public String checkWho(@AuthenticationPrincipal User user) {
+        if (user.getSeller() != null) {
+            return "seller";
+        } else return "consumer";
+    }
+
     @PatchMapping("/{purchaseId}/{status}")
     public ResponseEntity<String> updateStatus(@PathVariable Long purchaseId, Principal principal, @PathVariable Status status) {
         String userId = principal.getName();
