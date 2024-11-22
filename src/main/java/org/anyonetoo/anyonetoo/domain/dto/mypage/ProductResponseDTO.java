@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class ProductResponseDTO {
+        private Long productId;
         private String title;
         private String content;
         private Long price;
@@ -20,6 +21,7 @@ public class ProductResponseDTO {
 
         public static ProductResponseDTO from(Product product) {
                 return ProductResponseDTO.builder()
+                        .productId(product.getProductId())
                         .title(product.getTitle())
                         .content(product.getContent())
                         .price(product.getPrice())

@@ -13,11 +13,13 @@ import org.anyonetoo.anyonetoo.domain.enums.Status;
 @AllArgsConstructor
 public class PurchaseResponseDTO {
 
+    private Long purchaseId;
     private Status status;
     private Long consumerId;
 
     public static PurchaseResponseDTO from(Purchase purchase) {
         return PurchaseResponseDTO.builder()
+                .purchaseId(purchase.getPurchaseId())
                 .status(purchase.getStatus())
                 .consumerId(purchase.getConsumer().getId())
                 .build();
