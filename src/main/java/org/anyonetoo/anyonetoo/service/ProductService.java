@@ -53,6 +53,9 @@ public class ProductService {
 
     @Transactional
     public List<SubCommentResponseDto> getSubComments(Long productId, Long mainCommentId){
+        if(!productRepository.existsById(productId))
+            throw new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND);
+
         return commentService.getSubComments(productId, mainCommentId);
     }
 
@@ -105,12 +108,20 @@ public class ProductService {
 
     @Transactional
     public Long saveMainComment(Long userId, Long productId, MainCommentRequestDto request){
-        return commentService.saveMainComment(userId, productId, request);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
+
+        return commentService.saveMainComment(userId, product, request);
     }
 
     @Transactional
     public Long saveSubComment(Long userId, Long productId, SubCommentRequestDto request){
-        return commentService.saveSubComment(userId, productId, request);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
+
+        return commentService.saveSubComment(userId, product, request);
     }
 
     @Transactional

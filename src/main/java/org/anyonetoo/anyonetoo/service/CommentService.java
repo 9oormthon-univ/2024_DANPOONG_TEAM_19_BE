@@ -39,18 +39,12 @@ public class CommentService {
         if(!commentRepository.existsByMainCommentId(mainCommentId))
             throw new RestApiException(CustomErrorCode.COMMENT_NOT_FOUND);
 
-        if(!productRepository.existsById(productId))
-            throw new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND);
-
         return commentRepository.findAllSubComments(productId, mainCommentId).stream()
                 .map(SubCommentResponseDto::from)
                 .collect(Collectors.toList());
     }
 
-    public Long saveMainComment(Long userId, Long productId, MainCommentRequestDto request){
-
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
+    public Long saveMainComment(Long userId, Product product, MainCommentRequestDto request){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
@@ -67,10 +61,7 @@ public class CommentService {
         return savedComment.getCommentId();
     }
 
-    public Long saveSubComment(Long userId, Long productId, SubCommentRequestDto request){
-
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
+    public Long saveSubComment(Long userId, Product product, SubCommentRequestDto request){
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
