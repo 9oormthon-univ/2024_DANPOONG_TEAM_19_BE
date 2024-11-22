@@ -2,6 +2,9 @@ package org.anyonetoo.anyonetoo.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.ProductResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.StatusResponseDTO;
+import org.anyonetoo.anyonetoo.domain.entity.Product;
 import org.anyonetoo.anyonetoo.domain.entity.Purchase;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.domain.enums.Status;
@@ -11,6 +14,9 @@ import org.anyonetoo.anyonetoo.repository.AlarmRepository;
 import org.anyonetoo.anyonetoo.repository.PurchaseRepository;
 import org.anyonetoo.anyonetoo.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +41,11 @@ public class MypageService {
 
     }
 
-    public String showStatus(Long purchaseId) {
+    public StatusResponseDTO showStatus(Long purchaseId) {
         Purchase purchase = purchaseRepository.findById(purchaseId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.PURCHASE_NOT_FOUND));
-        String status = purchase.getStatus().name();
-        return status;
+
+        return StatusResponseDTO.from(purchase);
+
     }
 }
