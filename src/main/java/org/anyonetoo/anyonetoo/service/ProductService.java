@@ -146,14 +146,12 @@ public class ProductService {
         List<Product> products = productRepository.findBySellerId(sellerId);
 
         // 상품이 없으면 예외 처리
-        if (products.isEmpty()) {
-            throw new RuntimeException("상품이 존재하지 않습니다");
-        }
+//        if (products.isEmpty()) {
+//            throw new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND);
+//        }
 
-        // Product 엔티티 리스트를 ProductResponseDTO 리스트로 변환하여 반환
         return products.stream()
                 .map(ProductResponseDTO::from)
                 .collect(Collectors.toList());
     }
-
 }

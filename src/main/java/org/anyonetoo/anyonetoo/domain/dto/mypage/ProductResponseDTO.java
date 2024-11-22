@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import org.anyonetoo.anyonetoo.domain.entity.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,17 +15,17 @@ public class ProductResponseDTO {
         private String title;
         private String content;
         private Long price;
-        private Seller seller;
+        private Long sellerId;
         private List<Image> images;
 
         public static ProductResponseDTO from(Product product) {
-            return ProductResponseDTO.builder()
-                    .title(product.getTitle())
-                    .content(product.getContent())
-                    .price(product.getPrice())
-                    .seller(product.getSeller())
-                    .images(product.getImages())
-                    .build();
+                return ProductResponseDTO.builder()
+                        .title(product.getTitle())
+                        .content(product.getContent())
+                        .price(product.getPrice())
+                        .sellerId(product.getSeller().getId())
+                        .images(product.getImages())
+                        .build();
         }
 
 }

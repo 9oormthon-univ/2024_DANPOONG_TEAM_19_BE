@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.dto.video.KakaoVideoSearchResponseDTO;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.domain.mapping.ConsumerPrefer;
+import org.anyonetoo.anyonetoo.domain.mapping.SellerPrefer;
+import org.anyonetoo.anyonetoo.exception.RestApiException;
+import org.anyonetoo.anyonetoo.exception.code.CustomErrorCode;
 import org.anyonetoo.anyonetoo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,17 +31,46 @@ public class VideoService {
     private final WebClient webClient = WebClient.builder().build();
 
     public KakaoVideoSearchResponseDTO search(String userId) {
+        String query;
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() ->new RestApiException(CustomErrorCode.USER_NOT_FOUND));
+        if(user.getConsumer()!=null) {
 
-        List<ConsumerPrefer> consumerPrefers = user.getConsumer().getConsumerPrefers();
+            List<ConsumerPrefer> consumerPrefers = user.getConsumer().getConsumerPrefers();
 
-        int randomIndex = ThreadLocalRandom.current().nextInt(consumerPrefers.size());
-        ConsumerPrefer randomPrefer = consumerPrefers.get(randomIndex);
+            int randomIndex = ThreadLocalRandom.current().nextInt(consumerPrefers.size());
+            ConsumerPrefer randomPrefer = consumerPrefers.get(randomIndex);
 
-        String query = randomPrefer.getCategory().getName();
+            query = randomPrefer.getCategory().getName();
+        }else{
+            List<SellerPrefer> sellerPrefers = user.getSeller().getSellerPrefers();
 
+            int randomIndex = ThreadLocalRandom.current().nextInt(sellerPrefers.size());
+            SellerPrefer randomPrefer = sellerPrefers.get(randomIndex);
+
+            query = randomPrefer.getCategory().getName();
+        }
+
+        String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .queryParam("query", query)
+                .toUriString();
+
+        return webClient.get()
+                .uri(requestUrl)
+                .header("Authorization", "KakaoAK " + apiKey)
+                .retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
+                        clientResponse -> {
+                            // 응답 상태 코드 출력
+                            System.out.println("Error response: " + clientResponse.statusCode());
+                            return clientResponse.createException();
+                        })
+                .bodyToMono(KakaoVideoSearchResponseDTO.class)
+                .block();
+    }
+
+    public KakaoVideoSearchResponseDTO searchKeyword(String query) {
         String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl)
                 .queryParam("query", query)
                 .toUriString();
