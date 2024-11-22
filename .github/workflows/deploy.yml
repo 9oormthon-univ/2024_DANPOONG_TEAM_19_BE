@@ -79,4 +79,7 @@ jobs:
               echo "[ spring is not running ]"
             fi
             
-            docker run -d --name anyonetoo-server -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/anyonetoo-server
+            docker run -d --name anyonetoo-server \
+              -p 80:8080 \
+              -p 443:8443 \
+              ${{ secrets.DOCKER_USERNAME }}/anyonetoo-server
