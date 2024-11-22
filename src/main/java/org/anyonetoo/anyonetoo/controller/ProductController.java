@@ -13,7 +13,7 @@ import org.anyonetoo.anyonetoo.domain.dto.req.UpdateCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.*;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.ProductService;
-import org.anyonetoo.anyonetoo.service.S3Service;
+//import org.anyonetoo.anyonetoo.service.S3Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
