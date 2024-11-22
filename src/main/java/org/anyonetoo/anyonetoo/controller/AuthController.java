@@ -24,8 +24,8 @@ public class AuthController {
         return ResponseEntity.ok("Registration successful");
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<String> checkId(@RequestBody String userId){
+    @GetMapping("/check/{userId}")
+    public ResponseEntity<String> checkId(@PathVariable String userId){
         User user = userRepository.findById(userId).orElse(null);
         if(user == null) { return ResponseEntity.ok("사용가능한 아이디입니다."); }
         return ResponseEntity.status(400).body("이미 사용하고 있는 아이디가 있습니다");
