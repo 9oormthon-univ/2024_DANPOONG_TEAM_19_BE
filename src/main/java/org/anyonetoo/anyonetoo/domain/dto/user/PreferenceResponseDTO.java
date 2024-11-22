@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.anyonetoo.anyonetoo.domain.entity.Category;
 import org.anyonetoo.anyonetoo.domain.entity.Seller;
 
-
 @Getter
 @Setter
 public class PreferenceResponseDTO {

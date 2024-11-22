@@ -44,9 +44,6 @@ dependencies {
     //webClient
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-
-    // DB
-    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     // S3

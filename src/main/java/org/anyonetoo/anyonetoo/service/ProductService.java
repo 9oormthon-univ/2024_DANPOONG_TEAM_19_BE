@@ -14,9 +14,11 @@ import org.anyonetoo.anyonetoo.exception.code.CustomErrorCode;
 import org.anyonetoo.anyonetoo.repository.ConsumerRepository;
 import org.anyonetoo.anyonetoo.repository.ProductRepository;
 import org.anyonetoo.anyonetoo.repository.SellerRepository;
+import org.anyonetoo.anyonetoo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
-
+    private final ConsumerRepository consumerRepository;
 
     private final CommentService commentService;
     private final PurchaseService purchaseService;
@@ -55,7 +57,16 @@ public class ProductService {
     }
 
     @Transactional
-    public Long deleteProduct(Long productId){
+    public Long deleteProduct(Long userId, Long productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
+
+        Seller seller = sellerRepository.findByUserId(userId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
+
+        if(!Objects.equals(product.getSeller().getUser().getUserId(), userId))
+            throw new RestApiException(CustomErrorCode.NO_PERMISSION_FOR_DELETE_PRODUCT);
+
         productRepository.deleteById(productId);
         return productId;
     }
