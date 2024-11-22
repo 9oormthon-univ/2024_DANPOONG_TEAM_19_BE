@@ -2,7 +2,9 @@ package org.anyonetoo.anyonetoo.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.anyonetoo.anyonetoo.domain.dto.image.PreSignedUrlResponseDto;
 import org.anyonetoo.anyonetoo.domain.dto.mypage.ProductResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.ProductSaveResponseDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
@@ -20,37 +22,57 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
-    private final ConsumerRepository consumerRepository;
+    private final S3Service s3Service;
 
     private final CommentService commentService;
     private final PurchaseService purchaseService;
     @Transactional
-    public List<ProductSummaryDto> getAllProduct(){
+    public List<ProductSummaryDto> getAllProduct() {
         return productRepository.findAll().stream()
-                .map(ProductSummaryDto::from)
+                .map(product -> {
+                    String thumbnailUrl = s3Service.getImageUrl(product.getImages().get(0).getImageUrl());
+
+                    return ProductSummaryDto.builder()
+                            .productId(product.getProductId())
+                            .title(product.getTitle())
+                            .price(product.getPrice())
+                            .imgUrl(thumbnailUrl)
+                            .sellerName(product.getSeller().getName())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public ProductResponseDto getProduct(Long productId){
-
+    public ProductResponseDto getProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND));
 
-        ProductDetailDto productDetail = ProductDetailDto.from(product);
+        List<String> imageUrls = product.getImages().stream()
+                .map(image -> s3Service.getImageUrl(image.getImageUrl()))
+                .collect(Collectors.toList());
+
+        ProductDetailDto productDetail = ProductDetailDto.builder()
+                .productId(product.getProductId())
+                .title(product.getTitle())
+                .content(product.getContent())
+                .price(product.getPrice())
+                .imgUrl(imageUrls)
+                .sellerName(product.getSeller().getName())
+                .build();
 
         return ProductResponseDto.builder()
                 .productDetail(productDetail)
                 .mainComments(commentService.getMainComments(productId))
                 .build();
     }
-
     @Transactional
     public List<SubCommentResponseDto> getSubComments(Long productId, Long mainCommentId){
         if(!productRepository.existsById(productId))
@@ -77,12 +99,22 @@ public class ProductService {
     @Transactional
     public List<ProductSummaryDto> searchProduct(String keyword){
         return productRepository.findByTitleContaining(keyword).stream()
-                .map(ProductSummaryDto::from)
+                .map(product -> {
+                    String thumbnailUrl = s3Service.getImageUrl(product.getImages().get(0).getImageUrl());
+
+                    return ProductSummaryDto.builder()
+                            .productId(product.getProductId())
+                            .title(product.getTitle())
+                            .price(product.getPrice())
+                            .imgUrl(thumbnailUrl)
+                            .sellerName(product.getSeller().getName())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public Long saveProduct(Long userId, ProductRequestDto request){
+    public ProductSaveResponseDto saveProduct(Long userId, ProductRequestDto request) {
         Seller seller = sellerRepository.findById(userId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.SELLER_NOT_FOUND));
 
@@ -93,17 +125,16 @@ public class ProductService {
                 .seller(seller)
                 .build();
 
-        request.getImageUrls().forEach(url -> {
-            Image image = Image.builder()
-                    .imageUrl(url)
-                    .product(product)
-                    .build();
+        productRepository.save(product);
 
-            product.getImages().add(image);
-        });
+        List<PreSignedUrlResponseDto> preSignedUrls = IntStream.range(0, request.getImageCount())
+                .mapToObj(i -> s3Service.generateUploadPreSignedUrl(request.getTitle(), product))
+                .collect(Collectors.toList());
 
-        Product savedProduct = productRepository.save(product);
-        return savedProduct.getProductId();
+        return ProductSaveResponseDto.builder()
+                .productId(product.getProductId())
+                .presignedUrls(preSignedUrls)
+                .build();
     }
 
     @Transactional

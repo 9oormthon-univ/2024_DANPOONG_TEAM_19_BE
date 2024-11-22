@@ -21,12 +21,15 @@ public enum CustomErrorCode implements ErrorCode{
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Comment Not Found"),
     NO_PERMISSION_FOR_COMMENT(HttpStatus.FORBIDDEN, 403, "No Permission For Comment"),
 
-    // Seller
+    // Seller & Consumer
     SELLER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Seller Not Found"),
     CONSUMER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Consumer Not Found"),
 
     PURCHASE_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Purchase Not Found"),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Purchase Not Found"),
+
+    // S3
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Image Not Found")
     ;
 
 
