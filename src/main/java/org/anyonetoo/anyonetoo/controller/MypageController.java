@@ -33,8 +33,10 @@ public class MypageController {
     }
 
     @GetMapping("/info")
-    public String showMyInfo(Principal principal){
-        return principal.getName();
+    public String showMyInfo(@AuthenticationPrincipal User user){
+        if (user.getSeller() != null) {
+            return user.getSeller().getName();
+        } else return user.getConsumer().getName();
     }
 
     @PatchMapping("/{purchaseId}/{status}")
