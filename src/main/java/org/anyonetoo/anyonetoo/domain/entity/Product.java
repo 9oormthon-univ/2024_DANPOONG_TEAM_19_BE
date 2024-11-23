@@ -28,7 +28,7 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private Long price;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
