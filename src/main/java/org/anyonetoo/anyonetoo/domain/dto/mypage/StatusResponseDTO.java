@@ -6,28 +6,21 @@ import lombok.Getter;
 import lombok.Setter;
 import org.anyonetoo.anyonetoo.domain.entity.Purchase;
 import org.anyonetoo.anyonetoo.domain.enums.Status;
-
 @Getter
 @Builder
 @Setter
 @AllArgsConstructor
-public class PurchaseResponseDTO {
+public class StatusResponseDTO {
 
-    private Long purchaseId;
     private Status status;
     private Long consumerId;
     private String consumerName;
-    private String title;
 
-    public static PurchaseResponseDTO from(Purchase purchase) {
-        return PurchaseResponseDTO.builder()
-                .purchaseId(purchase.getPurchaseId())
+    public static StatusResponseDTO from(Purchase purchase) {
+        return StatusResponseDTO.builder()
                 .status(purchase.getStatus())
                 .consumerId(purchase.getConsumer().getId())
                 .consumerName(purchase.getConsumer().getName())
-                .title(purchase.getProduct().getTitle())
                 .build();
     }
-
-
 }

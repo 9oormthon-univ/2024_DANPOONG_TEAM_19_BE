@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.dto.mypage.ProductResponseDTO;
 import org.anyonetoo.anyonetoo.domain.dto.mypage.PurchaseResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.StatusResponseDTO;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.domain.enums.Status;
 import org.anyonetoo.anyonetoo.service.MypageService;
@@ -31,6 +32,11 @@ public class MypageController {
         } else return "consumer";
     }
 
+    @GetMapping("/info")
+    public String showMyInfo(Principal principal){
+        return principal.getName();
+    }
+
     @PatchMapping("/{purchaseId}/{status}")
     public ResponseEntity<String> updateStatus(@PathVariable Long purchaseId, Principal principal, @PathVariable Status status) {
         String userId = principal.getName();
@@ -41,8 +47,8 @@ public class MypageController {
     }
 
     @GetMapping("/{purchaseId}")
-    public ResponseEntity<String> showStatus(@PathVariable Long purchaseId) {
-        String status = mypageService.showStatus(purchaseId);
+    public ResponseEntity<StatusResponseDTO> showStatus(@PathVariable Long purchaseId) {
+        StatusResponseDTO status = mypageService.showStatus(purchaseId);
         return ResponseEntity.ok(status);
     }
 
