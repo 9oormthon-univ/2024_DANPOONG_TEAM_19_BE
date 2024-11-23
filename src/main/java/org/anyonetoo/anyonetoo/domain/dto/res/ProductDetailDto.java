@@ -32,17 +32,13 @@ public class ProductDetailDto {
     @Schema(description = "판매자 이름", example = "김옥자")
     private String sellerName;
 
-    public static ProductDetailDto from(Product product){
-        List<String> imgUrls = product.getImages().stream()
-                .map(Image::getImageUrl)
-                .toList();
-
+    public static ProductDetailDto from(Product product, List<String> preSignedUrls) {
         return ProductDetailDto.builder()
                 .productId(product.getProductId())
                 .title(product.getTitle())
                 .content(product.getContent())
                 .price(product.getPrice())
-                .imgUrl(imgUrls)
+                .imgUrl(preSignedUrls)
                 .sellerName(product.getSeller().getName())
                 .build();
     }

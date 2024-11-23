@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.anyonetoo.anyonetoo.domain.dto.product.ProductSaveResponseDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
@@ -13,7 +14,6 @@ import org.anyonetoo.anyonetoo.domain.dto.req.UpdateCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.*;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.ProductService;
-//import org.anyonetoo.anyonetoo.service.S3Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -49,14 +49,9 @@ public class ProductController {
     public ResponseEntity<ResponseDto<ProductResponseDto>> getProduct(@PathVariable Long productId){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.getProduct(productId), "특정 상품 조회 성공"));
     }
-    @Operation(summary = "상품 등록")
-     @ApiResponses({
-             @ApiResponse(responseCode = "201", description = "상품 등록 성공"),
-             @ApiResponse(responseCode = "400", description = "요청 본문 에러")
-     })
-    @PostMapping()
-    public ResponseEntity<ResponseDto<Long>> saveProduct(@AuthenticationPrincipal User user,
-                                                         @Valid @RequestBody ProductRequestDto request){
+    @PostMapping
+    public ResponseEntity<ResponseDto<ProductSaveResponseDto>> saveProduct(@AuthenticationPrincipal User user,
+                                                                           @Valid @RequestBody ProductRequestDto request){
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(productService.saveProduct(user.getUserId(), request), "상품 등록 성공"));
     }
 
@@ -69,9 +64,8 @@ public class ProductController {
             @ApiResponse(responseCode = "403", description = "삭제 권한 없음")
     })
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ResponseDto<Long>> deleteProduct(HttpServletRequest req,
+    public ResponseEntity<ResponseDto<Long>> deleteProduct(@AuthenticationPrincipal User user,
                                                             @PathVariable Long productId){
-        User user = (User) req.getAttribute("user");
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.deleteProduct(user.getUserId(), productId), "상품 삭제 성공"));
     }
 
