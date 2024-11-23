@@ -16,6 +16,7 @@ public enum CustomErrorCode implements ErrorCode{
     NO_PERMISSION_FOR_DELETE_PRODUCT(HttpStatus.FORBIDDEN, 403, "No permission provided for delete this product"),
     // User
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "User Not Found"),
+    INVALID_USER_TYPE(HttpStatus.BAD_REQUEST, 400, "User type not Defined"),
 
     // Comment
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "Comment Not Found"),

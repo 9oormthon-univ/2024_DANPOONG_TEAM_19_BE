@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
     private final SellerRepository sellerRepository;
-    private final ConsumerRepository consumerRepository;
+    private final UserRepository userRepository;
 
     private final CommentService commentService;
     private final PurchaseService purchaseService;
@@ -83,7 +83,11 @@ public class ProductService {
 
     @Transactional
     public Long saveProduct(Long userId, ProductRequestDto request){
-        Seller seller = sellerRepository.findById(userId)
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
+
+        Seller seller = sellerRepository.findById(user.getSeller().getId())
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.SELLER_NOT_FOUND));
 
         Product product = Product.builder()
