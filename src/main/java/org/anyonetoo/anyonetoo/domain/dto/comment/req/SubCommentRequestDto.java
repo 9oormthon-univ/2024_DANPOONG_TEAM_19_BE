@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.req;
+package org.anyonetoo.anyonetoo.domain.dto.comment.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

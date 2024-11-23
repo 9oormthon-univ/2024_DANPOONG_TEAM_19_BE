@@ -1,8 +1,8 @@
-package org.anyonetoo.anyonetoo.domain.dto.product;
+package org.anyonetoo.anyonetoo.domain.dto.product.res;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.anyonetoo.anyonetoo.domain.dto.image.PreSignedUrlResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.image.res.PreSignedUrlResponseDto;
 
 import java.util.List;
 @Getter

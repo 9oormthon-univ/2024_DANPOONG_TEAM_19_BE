@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.user;
+package org.anyonetoo.anyonetoo.domain.dto.user.res;
 
 import lombok.Getter;
 import lombok.Setter;

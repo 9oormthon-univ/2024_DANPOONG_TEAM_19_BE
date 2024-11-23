@@ -1,12 +1,9 @@
-package org.anyonetoo.anyonetoo.domain.dto.mypage;
+package org.anyonetoo.anyonetoo.domain.dto.mypage.res;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.anyonetoo.anyonetoo.domain.entity.*;
-
-import java.util.List;
 
 @Getter
 @Builder

@@ -1,11 +1,11 @@
 package org.anyonetoo.anyonetoo.service;
 
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.UpdateCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.res.MainCommentResponseDto;
-import org.anyonetoo.anyonetoo.domain.dto.res.SubCommentResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.MainCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.SubCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.UpdateCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.res.MainCommentResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.res.SubCommentResponseDto;
 import org.anyonetoo.anyonetoo.domain.entity.Comment;
 import org.anyonetoo.anyonetoo.domain.entity.Product;
 import org.anyonetoo.anyonetoo.domain.entity.User;

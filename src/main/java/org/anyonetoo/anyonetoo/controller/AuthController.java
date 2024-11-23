@@ -2,8 +2,8 @@ package org.anyonetoo.anyonetoo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.auth.LoginRequestDTO;
-import org.anyonetoo.anyonetoo.domain.dto.auth.RegisterRequestDTO;
+import org.anyonetoo.anyonetoo.domain.dto.auth.req.LoginRequestDTO;
+import org.anyonetoo.anyonetoo.domain.dto.auth.req.RegisterRequestDTO;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.repository.UserRepository;
 import org.anyonetoo.anyonetoo.service.UserService;

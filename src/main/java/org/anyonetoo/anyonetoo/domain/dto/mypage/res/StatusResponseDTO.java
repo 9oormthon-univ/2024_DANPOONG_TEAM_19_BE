@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.mypage;
+package org.anyonetoo.anyonetoo.domain.dto.mypage.res;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,23 +11,19 @@ import org.anyonetoo.anyonetoo.domain.enums.Status;
 @Builder
 @Setter
 @AllArgsConstructor
-public class PurchaseResponseDTO {
+public class StatusResponseDTO {
 
-    private Long purchaseId;
     private Status status;
     private Long consumerId;
     private String consumerName;
-    private String title;
+    private String imgUrl;
 
-    public static PurchaseResponseDTO from(Purchase purchase) {
-        return PurchaseResponseDTO.builder()
-                .purchaseId(purchase.getPurchaseId())
+    public static StatusResponseDTO from(Purchase purchase, String preSignedUrl) {
+        return StatusResponseDTO.builder()
                 .status(purchase.getStatus())
                 .consumerId(purchase.getConsumer().getId())
                 .consumerName(purchase.getConsumer().getName())
-                .title(purchase.getProduct().getTitle())
+                .imgUrl(preSignedUrl)
                 .build();
     }
-
-
 }

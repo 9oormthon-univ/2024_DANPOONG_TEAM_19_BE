@@ -1,9 +1,8 @@
 package org.anyonetoo.anyonetoo.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.user.PreferenceRequestDTO;
+import org.anyonetoo.anyonetoo.domain.dto.user.req.PreferenceRequestDTO;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.UserService;
 import org.springframework.http.HttpStatus;

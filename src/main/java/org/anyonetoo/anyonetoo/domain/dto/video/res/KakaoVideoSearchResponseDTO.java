@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.video;
+package org.anyonetoo.anyonetoo.domain.dto.video.res;
 
 import lombok.Data;
 

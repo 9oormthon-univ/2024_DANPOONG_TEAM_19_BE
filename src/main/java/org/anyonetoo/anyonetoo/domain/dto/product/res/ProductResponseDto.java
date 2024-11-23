@@ -1,8 +1,10 @@
-package org.anyonetoo.anyonetoo.domain.dto.res;
+package org.anyonetoo.anyonetoo.domain.dto.product.res;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+import org.anyonetoo.anyonetoo.domain.dto.comment.res.MainCommentResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductDetailResponseDto;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
 @Builder
 public class ProductResponseDto {
     @Schema(description = "상품 상세정보")
-    private ProductDetailDto productDetail;
+    private ProductDetailResponseDto productDetail;
 
     @Schema(description = "상품 댓글")
     private List<MainCommentResponseDto> mainComments;

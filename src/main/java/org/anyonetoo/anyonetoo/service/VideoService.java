@@ -1,7 +1,7 @@
 package org.anyonetoo.anyonetoo.service;
 
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.video.KakaoVideoSearchResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.video.res.KakaoVideoSearchResponseDTO;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.domain.mapping.ConsumerPrefer;
 import org.anyonetoo.anyonetoo.domain.mapping.SellerPrefer;
@@ -35,7 +35,6 @@ public class VideoService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
 
-        // 쿼리 생성
         if(user.getConsumer() != null) {
             List<ConsumerPrefer> consumerPrefers = user.getConsumer().getConsumerPrefers();
             int randomIndex = ThreadLocalRandom.current().nextInt(consumerPrefers.size());
@@ -49,18 +48,16 @@ public class VideoService {
         }
 
         String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("query", query) // 쿼리 파라미터로 query 값을 설정
-                .build()  // UriComponents를 빌드
+                .queryParam("query", query)
+                .build()
                 .toUriString();
 
-        // WebClient 사용하여 API 요청
         return webClient.get()
                 .uri(requestUrl)
                 .header("Authorization", "KakaoAK " + apiKey)
                 .retrieve()
                 .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
                         clientResponse -> {
-                            // 응답 상태 코드 출력
                             System.out.println("Error response: " + clientResponse.statusCode());
                             return clientResponse.createException();
                         })
@@ -69,11 +66,11 @@ public class VideoService {
     }
 
     public KakaoVideoSearchResponseDTO searchKeyword(String query) {
-        // 쿼리 파라미터를 URL 인코딩 처리
+
         String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("query", query) // 쿼리 파라미터로 query 값을 설정
-                .build()  // UriComponents를 빌드
-                .toUriString(); // 최종 URI 문자열로 변환 (encode()는 필요 없음)
+                .queryParam("query", query)
+                .build()
+                .toUriString();
 
         return webClient.get()
                 .uri(requestUrl)
@@ -81,7 +78,6 @@ public class VideoService {
                 .retrieve()
                 .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
                         clientResponse -> {
-                            // 응답 상태 코드 출력
                             System.out.println("Error response: " + clientResponse.statusCode());
                             return clientResponse.createException();
                         })

@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.image;
+package org.anyonetoo.anyonetoo.domain.dto.image.res;
 
 import lombok.*;
 

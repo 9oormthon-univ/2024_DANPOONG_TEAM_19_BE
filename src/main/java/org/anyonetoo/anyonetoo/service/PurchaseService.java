@@ -1,7 +1,7 @@
 package org.anyonetoo.anyonetoo.service;
 
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.mypage.PurchaseResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.res.PurchaseResponseDTO;
 import org.anyonetoo.anyonetoo.domain.entity.Consumer;
 import org.anyonetoo.anyonetoo.domain.entity.Product;
 import org.anyonetoo.anyonetoo.domain.entity.Purchase;
@@ -23,6 +23,7 @@ public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
 
     private final AlarmService alarmService;
+    private final S3Service s3Service;
 
     public Long savePurchase(Long userId, Product product){
 
@@ -44,18 +45,26 @@ public class PurchaseService {
     public List<PurchaseResponseDTO> showAllConsumerPurchases(Long consumerId) {
         List<Purchase> purchases = purchaseRepository.findByConsumerId(consumerId);
 
-//        if (purchases.isEmpty()) {
-//            throw new RestApiException(CustomErrorCode.PURCHASE_NOT_FOUND);
-//        }
         return purchases.stream()
-                .map(PurchaseResponseDTO::from)
+                .map(purchase -> {
+                    String thumbnailUrl = s3Service.getImageUrl(
+                            purchase.getProduct().getImages().get(0).getImageUrl()
+                    );
+                    return PurchaseResponseDTO.from(purchase, thumbnailUrl);
+                })
                 .collect(Collectors.toList());
     }
 
     public List<PurchaseResponseDTO> showAllPurchases(Long productId) {
         List<Purchase> purchases = purchaseRepository.findByProduct_ProductId(productId);
+
         return purchases.stream()
-                .map(PurchaseResponseDTO::from)  // DTO로 변환
+                .map(purchase -> {
+                    String thumbnailUrl = s3Service.getImageUrl(
+                            purchase.getProduct().getImages().get(0).getImageUrl()
+                    );
+                    return PurchaseResponseDTO.from(purchase, thumbnailUrl);
+                })
                 .collect(Collectors.toList());
     }
 }

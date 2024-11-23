@@ -2,7 +2,7 @@ package org.anyonetoo.anyonetoo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.anyonetoo.anyonetoo.domain.dto.alarm.AlarmResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.alarm.res.AlarmResponseDto;
 import org.anyonetoo.anyonetoo.domain.entity.*;
 import org.anyonetoo.anyonetoo.domain.enums.Status;
 import org.anyonetoo.anyonetoo.exception.RestApiException;

@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.alarm;
+package org.anyonetoo.anyonetoo.domain.dto.alarm.res;
 
 import lombok.*;
 

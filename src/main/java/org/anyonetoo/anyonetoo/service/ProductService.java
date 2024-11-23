@@ -2,21 +2,22 @@ package org.anyonetoo.anyonetoo.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.image.PreSignedUrlResponseDto;
-import org.anyonetoo.anyonetoo.domain.dto.mypage.ProductResponseDTO;
-import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.product.ProductSaveResponseDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.UpdateCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.res.*;
+import org.anyonetoo.anyonetoo.domain.dto.comment.res.SubCommentResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.image.res.PreSignedUrlResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.res.ProductResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.MainCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductDetailResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductSaveResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.req.ProductRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.SubCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.UpdateCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductSummaryResponseDto;
 import org.anyonetoo.anyonetoo.domain.entity.*;
 import org.anyonetoo.anyonetoo.exception.RestApiException;
 import org.anyonetoo.anyonetoo.exception.code.CustomErrorCode;
-import org.anyonetoo.anyonetoo.repository.ConsumerRepository;
 import org.anyonetoo.anyonetoo.repository.ProductRepository;
 import org.anyonetoo.anyonetoo.repository.SellerRepository;
-import org.anyonetoo.anyonetoo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,12 +35,12 @@ public class ProductService {
     private final CommentService commentService;
     private final PurchaseService purchaseService;
     @Transactional
-    public List<ProductSummaryDto> getAllProduct() {
+    public List<ProductSummaryResponseDto> getAllProduct() {
         return productRepository.findAll().stream()
                 .map(product -> {
                     String thumbnailUrl = s3Service.getImageUrl(product.getImages().get(0).getImageUrl());
 
-                    return ProductSummaryDto.builder()
+                    return ProductSummaryResponseDto.builder()
                             .productId(product.getProductId())
                             .title(product.getTitle())
                             .price(product.getPrice())
@@ -59,7 +60,7 @@ public class ProductService {
                 .map(image -> s3Service.getImageUrl(image.getImageUrl()))
                 .collect(Collectors.toList());
 
-        ProductDetailDto productDetail = ProductDetailDto.builder()
+        ProductDetailResponseDto productDetail = ProductDetailResponseDto.builder()
                 .productId(product.getProductId())
                 .title(product.getTitle())
                 .content(product.getContent())
@@ -97,12 +98,12 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ProductSummaryDto> searchProduct(String keyword){
+    public List<ProductSummaryResponseDto> searchProduct(String keyword){
         return productRepository.findByTitleContaining(keyword).stream()
                 .map(product -> {
                     String thumbnailUrl = s3Service.getImageUrl(product.getImages().get(0).getImageUrl());
 
-                    return ProductSummaryDto.builder()
+                    return ProductSummaryResponseDto.builder()
                             .productId(product.getProductId())
                             .title(product.getTitle())
                             .price(product.getPrice())
@@ -173,16 +174,20 @@ public class ProductService {
         return purchaseService.savePurchase(userId, product);
     }
 
-    public List<ProductResponseDTO> showAllProducts(Long sellerId) {
+    public List<ProductSummaryResponseDto> getSellerProducts(Long sellerId) {
         List<Product> products = productRepository.findBySellerId(sellerId);
 
-        // 상품이 없으면 예외 처리
-//        if (products.isEmpty()) {
-//            throw new RestApiException(CustomErrorCode.PRODUCT_NOT_FOUND);
-//        }
-
         return products.stream()
-                .map(ProductResponseDTO::from)
+                .map(product -> {
+                    String thumbnailUrl = s3Service.getImageUrl(product.getImages().get(0).getImageUrl());
+                    return ProductSummaryResponseDto.builder()
+                            .productId(product.getProductId())
+                            .title(product.getTitle())
+                            .price(product.getPrice())
+                            .imgUrl(thumbnailUrl)
+                            .sellerName(product.getSeller().getName())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 }

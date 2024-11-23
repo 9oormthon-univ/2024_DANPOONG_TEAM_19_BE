@@ -1,9 +1,8 @@
 package org.anyonetoo.anyonetoo.service;
 
 import jakarta.transaction.Transactional;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.auth.RegisterRequestDTO;
+import org.anyonetoo.anyonetoo.domain.dto.auth.req.RegisterRequestDTO;
 import org.anyonetoo.anyonetoo.domain.entity.Category;
 import org.anyonetoo.anyonetoo.domain.entity.Consumer;
 import org.anyonetoo.anyonetoo.domain.entity.Seller;
@@ -37,7 +36,7 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         userRepository.save(user);
-        // Consumer 또는 Seller 생성
+
         if ("consumer".equalsIgnoreCase(request.getRole())) {
             Consumer consumer = Consumer.builder()
                     .user(user)
@@ -107,5 +106,4 @@ public class UserService {
             consumerPreferRepository.save(consumerPrefer);
         }
     }
-
 }

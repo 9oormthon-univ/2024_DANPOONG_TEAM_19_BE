@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.res;
+package org.anyonetoo.anyonetoo.domain.dto.comment.res;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -24,7 +24,6 @@ public class MainCommentResponseDto {
     @Schema(description = "댓글 내용", example = "헐! 사고싶어요!")
     private String content;
 
-    // Todo BaseEntity 관련 수정 필요(createdAt기준 정렬가능하도록)
     @Schema(description = "작성일", example = "2024-10-22")
     private LocalDateTime createdAt;
 

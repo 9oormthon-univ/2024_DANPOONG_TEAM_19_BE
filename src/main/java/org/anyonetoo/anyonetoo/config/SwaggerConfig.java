@@ -13,15 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
-//        return new OpenAPI()
-//                .info(new Info().title("My API").version("v1"))
-//                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-//                .components(new io.swagger.v3.oas.models.Components()
-//                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
-//                                .name("Authorization")
-//                                .type(SecurityScheme.Type.HTTP)
-//                                .scheme("bearer")
-//                                .bearerFormat("JWT")));
         return new OpenAPI()
                 .info(new Info().title("My API").version("v1").description("API documentation with HTTPS support"))
                 .addServersItem(new io.swagger.v3.oas.models.servers.Server().url("https://anyonetooserver.site").description("Production Server"))
