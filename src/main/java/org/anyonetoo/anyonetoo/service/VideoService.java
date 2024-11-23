@@ -32,30 +32,28 @@ public class VideoService {
 
     public KakaoVideoSearchResponseDTO search(String userId) {
         String query;
-
         User user = userRepository.findById(userId)
-                .orElseThrow(() ->new RestApiException(CustomErrorCode.USER_NOT_FOUND));
-        if(user.getConsumer()!=null) {
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.USER_NOT_FOUND));
 
+        // 쿼리 생성
+        if(user.getConsumer() != null) {
             List<ConsumerPrefer> consumerPrefers = user.getConsumer().getConsumerPrefers();
-
             int randomIndex = ThreadLocalRandom.current().nextInt(consumerPrefers.size());
             ConsumerPrefer randomPrefer = consumerPrefers.get(randomIndex);
-
             query = randomPrefer.getCategory().getName();
-        }else{
+        } else {
             List<SellerPrefer> sellerPrefers = user.getSeller().getSellerPrefers();
-
             int randomIndex = ThreadLocalRandom.current().nextInt(sellerPrefers.size());
             SellerPrefer randomPrefer = sellerPrefers.get(randomIndex);
-
             query = randomPrefer.getCategory().getName();
         }
 
         String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("query", query)
+                .queryParam("query", query) // 쿼리 파라미터로 query 값을 설정
+                .build()  // UriComponents를 빌드
                 .toUriString();
 
+        // WebClient 사용하여 API 요청
         return webClient.get()
                 .uri(requestUrl)
                 .header("Authorization", "KakaoAK " + apiKey)
