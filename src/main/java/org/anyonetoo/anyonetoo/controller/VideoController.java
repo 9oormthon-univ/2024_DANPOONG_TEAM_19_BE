@@ -6,10 +6,7 @@ import org.anyonetoo.anyonetoo.domain.dto.video.KakaoVideoSearchResponseDTO;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.VideoService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -28,9 +25,9 @@ public class VideoController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search/{query}")
-    public ResponseEntity<KakaoVideoSearchResponseDTO> searchKeyword(Principal principal, @PathVariable String query) {
-        String userId = principal.getName();
+    @GetMapping("/search/keyword")
+    public ResponseEntity<KakaoVideoSearchResponseDTO> searchKeyword(Principal principal, @RequestParam String query) {
+
 
         KakaoVideoSearchResponseDTO response = videoService.searchKeyword(query);
         return ResponseEntity.ok(response);

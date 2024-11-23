@@ -71,9 +71,11 @@ public class VideoService {
     }
 
     public KakaoVideoSearchResponseDTO searchKeyword(String query) {
+        // 쿼리 파라미터를 URL 인코딩 처리
         String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("query", query)
-                .toUriString();
+                .queryParam("query", query) // 쿼리 파라미터로 query 값을 설정
+                .build()  // UriComponents를 빌드
+                .toUriString(); // 최종 URI 문자열로 변환 (encode()는 필요 없음)
 
         return webClient.get()
                 .uri(requestUrl)
@@ -88,6 +90,7 @@ public class VideoService {
                 .bodyToMono(KakaoVideoSearchResponseDTO.class)
                 .block();
     }
+
 
 
 
