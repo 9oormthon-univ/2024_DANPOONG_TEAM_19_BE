@@ -29,8 +29,6 @@ public class MypageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Consumer consumer = consumerRepository.findByUserId(user.getUserId())
-                .orElseThrow(() -> new RestApiException(CustomErrorCode.CONSUMER_NOT_FOUND));
 
         if(user.getSeller()!=null){
             Purchase purchase = purchaseRepository.findById(purchaseId)
@@ -38,6 +36,7 @@ public class MypageService {
             purchase.updateStatus(status);
             purchaseRepository.save(purchase);
 
+            Consumer consumer = purchase.getConsumer();
             alarmService.createUpdateAlarm(consumer.getId(), purchase.getProduct().getTitle(), status);
         }else{
             throw new RuntimeException("User not found");
