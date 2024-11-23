@@ -1,6 +1,7 @@
 package org.anyonetoo.anyonetoo.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.anyonetoo.anyonetoo.domain.dto.comment.req.MainCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.comment.req.SubCommentRequestDto;
 import org.anyonetoo.anyonetoo.domain.dto.comment.req.UpdateCommentRequestDto;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentService {
