@@ -1,9 +1,7 @@
 package org.anyonetoo.anyonetoo.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.anyonetoo.anyonetoo.domain.dto.mypage.PurchaseResponseDTO;
-import org.anyonetoo.anyonetoo.domain.entity.Alarm;
 import org.anyonetoo.anyonetoo.domain.entity.Consumer;
 import org.anyonetoo.anyonetoo.domain.entity.Product;
 import org.anyonetoo.anyonetoo.domain.entity.Purchase;
@@ -38,7 +36,7 @@ public class PurchaseService {
                 .build();
 
         purchaseRepository.save(purchase);
-        alarmService.createAlarm(consumer, purchase, product.getTitle());
+        alarmService.createOrderAlarm(consumer.getName(), product.getSeller().getId(), product.getTitle());
 
         return purchase.getPurchaseId();
     }

@@ -31,9 +31,6 @@ public class Purchase extends BaseEntity {
     @JoinColumn(name = "consumer_id")
     private Consumer consumer;
 
-    @OneToMany(mappedBy = "purchase", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Alarm> alarms = new ArrayList<>();
-
     @Builder
     public Purchase(Status status, Product product, Consumer consumer){
         this.status = status;
