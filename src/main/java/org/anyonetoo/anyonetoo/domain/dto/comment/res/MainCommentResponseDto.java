@@ -28,10 +28,19 @@ public class MainCommentResponseDto {
     private LocalDateTime createdAt;
 
     public static MainCommentResponseDto from(Comment comment){
+
+        String name;
+
+        if(comment.getUser().getSeller() != null) {
+            name = comment.getUser().getSeller().getName();
+        } else {
+            name = comment.getUser().getConsumer().getName();
+        }
+
         return MainCommentResponseDto.builder()
                 .commentId(comment.getCommentId())
                 .productId(comment.getProduct().getProductId())
-                .username(comment.getUser().getUsername())
+                .username(name)
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .build();
