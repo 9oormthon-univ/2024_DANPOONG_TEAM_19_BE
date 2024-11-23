@@ -1,60 +1,65 @@
-//package org.anyonetoo.anyonetoo.service;
-//
-//import com.amazonaws.services.s3.AmazonS3;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Service;
-//import software.amazon.awssdk.services.s3.S3Client;
-//import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-//import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-//import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
-//import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
-//
-//import java.time.Duration;
-//import java.util.UUID;
-//
-//@Service
-//@RequiredArgsConstructor
-//public class S3Service {
-//
-//    private final AmazonS3 amazonS3;
-//
-//    @Value("${spring.cloud.aws.s3.bucket}")
-//    private String bucket;
-//
-//
-//    public String generatePresignedUrl(String fileName) {
-//        String path = createPath(fileName);
-//
-//        S3Presigner presigner = S3Presigner.builder()
-//                .region(s3Client.serviceClientConfiguration().region())
-//                .credentialsProvider(s3Client.serviceClientConfiguration().credentialsProvider())
-//                .build();
-//
-//        PutObjectRequest objectRequest = PutObjectRequest.builder()
-//                .bucket(bucket)
-//                .key(path)
-//                .acl("public-read")  // CannedACL 설정
-//                .build();
-//
-//        PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-//                .signatureDuration(Duration.ofMinutes(5))  // 5분 만료
-//                .putObjectRequest(objectRequest)
-//                .build();
-//
-//        PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
-//
-//        presigner.close();
-//
-//        return presignedRequest.url().toString();
-//    }
-//
-//    private String createFileId() {
-//        return UUID.randomUUID().toString();
-//    }
-//
-//    private String createPath(String fileName) {
-//        String fileId = createFileId();
-//        return String.format("image/%s", fileId + fileName);
-//    }
-//}
+package org.anyonetoo.anyonetoo.service;
+
+import com.amazonaws.HttpMethod;
+import com.amazonaws.services.s3.AmazonS3;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.anyonetoo.anyonetoo.domain.dto.image.PreSignedUrlResponseDto;
+import org.anyonetoo.anyonetoo.domain.entity.Image;
+import org.anyonetoo.anyonetoo.domain.entity.Product;
+import org.anyonetoo.anyonetoo.exception.RestApiException;
+import org.anyonetoo.anyonetoo.exception.code.CustomErrorCode;
+import org.anyonetoo.anyonetoo.repository.ImageRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class S3Service {
+    private final AmazonS3 amazonS3;
+    private final ImageRepository imageRepository;
+
+    @Value("${spring.cloud.aws.s3.bucket}")
+    private String bucketName;
+
+    public PreSignedUrlResponseDto generateUploadPreSignedUrl(String productTitle, Product product) {
+        String objectKey = createObjectKey(productTitle);
+
+        Image image = Image.builder()
+                .imageUrl(objectKey)
+                .product(product)
+                .build();
+
+        imageRepository.save(image);
+
+        String preSignedUrl = amazonS3.generatePresignedUrl(bucketName,
+                objectKey,
+                getExpiredDate(),
+                HttpMethod.PUT).toString();
+
+        return PreSignedUrlResponseDto.of(image.getImageId(), preSignedUrl);
+    }
+
+    public String getImageUrl(String objectKey) {
+        return amazonS3.generatePresignedUrl(bucketName,
+                objectKey,
+                getExpiredDate(),
+                HttpMethod.GET).toString();
+    }
+
+    private String createObjectKey(String fileName) {
+        return "products/" + fileName + "-" + UUID.randomUUID();
+    }
+
+    private Date getExpiredDate() {
+        return Date.from(ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+                .plusHours(1)
+                .toInstant());
+    }
+}
