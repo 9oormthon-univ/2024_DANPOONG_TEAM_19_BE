@@ -1,7 +1,8 @@
 package org.anyonetoo.anyonetoo.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.AlarmResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.alarm.AlarmResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.alarm.OrderAlarmResponseDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.ResponseDto;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.AlarmService;
@@ -20,10 +21,9 @@ import java.util.List;
 public class AlarmController {
 
     private final AlarmService alarmService;
-
-//    @GetMapping
-//    public ResponseEntity<ResponseDto<List<AlarmResponseDto>>> getAllAlarms(@AuthenticationPrincipal User user){
-//        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(alarmService.getAllAlarms(user.getId()), "모든 알람 조회 성공"));
-//    }
+    @GetMapping
+    public ResponseEntity<ResponseDto<List<AlarmResponseDto>>> getAlarms(@AuthenticationPrincipal User user){
+     return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(alarmService.getAlarms(user), "알람 불러오기 성공"));
+    }
 
 }

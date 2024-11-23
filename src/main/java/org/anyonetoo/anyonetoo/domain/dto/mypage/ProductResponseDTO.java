@@ -19,8 +19,6 @@ public class ProductResponseDTO {
         private Long sellerId;
         private Image images;
 
-
-
         public static ProductResponseDTO from(Product product) {
                 Image image = (product.getImages() != null && !product.getImages().isEmpty())
                         ? product.getImages().get(0) : null;
