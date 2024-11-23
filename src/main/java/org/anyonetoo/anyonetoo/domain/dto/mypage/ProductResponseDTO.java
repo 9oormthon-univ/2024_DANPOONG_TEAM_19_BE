@@ -17,16 +17,20 @@ public class ProductResponseDTO {
         private String content;
         private Long price;
         private Long sellerId;
-        private List<Image> images;
+        private Image images;
+
+
 
         public static ProductResponseDTO from(Product product) {
+                Image image = (product.getImages() != null && !product.getImages().isEmpty())
+                        ? product.getImages().get(0) : null;
                 return ProductResponseDTO.builder()
                         .productId(product.getProductId())
                         .title(product.getTitle())
                         .content(product.getContent())
                         .price(product.getPrice())
                         .sellerId(product.getSeller().getId())
-                        .images(product.getImages())
+                        .images(image)
                         .build();
         }
 
