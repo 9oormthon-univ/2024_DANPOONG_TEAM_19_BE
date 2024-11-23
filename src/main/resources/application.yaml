@@ -6,3 +6,4 @@ kakao:
   api:
     key: "your-kakao-api-key"
     base-url: "https://dapi.kakao.com/v2/search/vclip"
+
