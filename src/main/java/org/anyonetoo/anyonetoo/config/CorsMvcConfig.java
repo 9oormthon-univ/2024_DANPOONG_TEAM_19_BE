@@ -11,7 +11,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry corsRegistry) {
 
         corsRegistry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("*")
                 .allowedMethods("*") // 허용할 HTTP 메서드
                 .allowedHeaders("*"); // 모든 헤더 허용
               //  .allowCredentials(true);
