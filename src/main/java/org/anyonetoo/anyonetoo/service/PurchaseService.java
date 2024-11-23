@@ -36,7 +36,7 @@ public class PurchaseService {
                 .build();
 
         purchaseRepository.save(purchase);
-        alarmService.createOrderAlarm(consumer.getName(), product.getSeller().getId(), product.getTitle())
+        alarmService.createOrderAlarm(consumer.getName(), product.getSeller().getId(), product.getTitle());
 
         return purchase.getPurchaseId();
     }
