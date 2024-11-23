@@ -1,6 +1,7 @@
 package org.anyonetoo.anyonetoo.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.anyonetoo.anyonetoo.domain.dto.alarm.AlarmResponseDto;
 import org.anyonetoo.anyonetoo.domain.entity.*;
 import org.anyonetoo.anyonetoo.domain.enums.Status;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AlarmService {
@@ -24,8 +26,20 @@ public class AlarmService {
 
     public List<AlarmResponseDto> getAlarms(User user){
         if(user.getSeller() != null) {
+            Seller seller = user.getSeller();
+            log.info("Seller Info - ID: {}, Name: {}, Age: {}",
+                    seller.getId(),
+                    seller.getName(),
+                    seller.getAge()
+            );
             return getAllOrderAlarm(user.getSeller().getId());
         }else if(user.getConsumer() != null){
+            Consumer consumer = user.getConsumer();
+            log.info("Consumer Info - ID: {}, Name: {}, Age: {}",
+                    consumer.getId(),
+                    consumer.getName(),
+                    consumer.getAge()
+            );
             return getAllUpdateAlarm(user.getConsumer().getId());
         }else{
           throw new RestApiException(CustomErrorCode.USER_NOT_FOUND);

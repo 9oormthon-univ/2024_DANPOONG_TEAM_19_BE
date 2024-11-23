@@ -29,7 +29,6 @@ public class UpdateAlarm extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-
     @Builder
     public UpdateAlarm(Long consumerId, String productName, Status status, String content) {
         this.consumerId = consumerId;
