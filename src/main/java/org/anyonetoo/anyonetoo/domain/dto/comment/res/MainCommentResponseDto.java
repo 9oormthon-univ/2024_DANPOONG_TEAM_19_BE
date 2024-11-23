@@ -40,7 +40,7 @@ public class MainCommentResponseDto {
         return MainCommentResponseDto.builder()
                 .commentId(comment.getCommentId())
                 .productId(comment.getProduct().getProductId())
-                .username(comment.getUser().getUsername())
+                .username(name)
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .build();
