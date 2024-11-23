@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping("/prefer")
     public ResponseEntity<String> selectCategory(@AuthenticationPrincipal User user, @Valid @RequestBody PreferenceRequestDTO selection) {
 

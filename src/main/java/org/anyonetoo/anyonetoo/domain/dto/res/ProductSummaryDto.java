@@ -25,12 +25,12 @@ public class ProductSummaryDto {
     @Schema(description = "판매자 이름", example = "김옥자")
     private String sellerName;
 
-    public static ProductSummaryDto from(Product product, String preSignedUrl) {
+    public static ProductSummaryDto from(Product product){
         return ProductSummaryDto.builder()
                 .productId(product.getProductId())
                 .title(product.getTitle())
                 .price(product.getPrice())
-                .imgUrl(preSignedUrl)
+                .imgUrl(product.getImages().get(1).getImageUrl())
                 .sellerName(product.getSeller().getName())
                 .build();
     }

@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class ProductResponseDTO {
-
         private Long productId;
         private String title;
         private String content;

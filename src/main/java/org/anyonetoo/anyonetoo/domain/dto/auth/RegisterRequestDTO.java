@@ -28,4 +28,6 @@ public class RegisterRequestDTO {
     @Schema(description = "사용자 역할", example = "consumer")
     @NotBlank
     private String role;     // 역할 (e.g., "consumer", "seller")
+
+
 }

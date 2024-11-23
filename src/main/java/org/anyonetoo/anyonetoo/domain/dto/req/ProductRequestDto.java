@@ -27,6 +27,6 @@ public class ProductRequestDto {
     @Min(value = 0, message = "가격은 0보다 작을 수 없습니다")
     private Long price;
 
-    @Schema(description = "상품에 포함된 이미지 개수(s3-preSignedUrl 반환용)", example = "https://anyonetoo-bucket.s3.ap-northeast-2.amazonaws.com/example.jpg")
-    private Integer imageCount;
+    @Schema(description = "상품 이미지 url", example = "https://anyonetoo-bucket.s3.ap-northeast-2.amazonaws.com/example.jpg")
+    private List<String> imageUrls;
 }
