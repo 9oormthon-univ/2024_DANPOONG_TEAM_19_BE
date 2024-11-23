@@ -34,6 +34,7 @@ public class Alarm extends BaseEntity {
     @Column(nullable = false)
     private String productName;
 
+
     @Builder
     public Alarm(String consumerName, Long sellerId, String productName) {
         this.consumerName = consumerName;

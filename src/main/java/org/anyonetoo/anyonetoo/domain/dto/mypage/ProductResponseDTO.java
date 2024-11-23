@@ -17,7 +17,7 @@ public class ProductResponseDTO {
         private String content;
         private Long price;
         private Long sellerId;
-        private Image images;
+        private String imageUrl;
 
         public static ProductResponseDTO from(Product product) {
                 Image image = (product.getImages() != null && !product.getImages().isEmpty())
@@ -28,7 +28,7 @@ public class ProductResponseDTO {
                         .content(product.getContent())
                         .price(product.getPrice())
                         .sellerId(product.getSeller().getId())
-                        .images(image)
+                        .imageUrl(image.getImageUrl())
                         .build();
         }
 
