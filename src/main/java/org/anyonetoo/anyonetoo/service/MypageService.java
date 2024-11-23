@@ -34,14 +34,14 @@ public class MypageService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Consumer consumer = consumerRepository.findByUserId(user.getUserId())
-                .orElseThrow(() -> new RestApiException(CustomErrorCode.CONSUMER_NOT_FOUND));
 
         if(user.getSeller()!=null){
             Purchase purchase = purchaseRepository.findById(purchaseId)
                     .orElseThrow(() -> new RestApiException(CustomErrorCode.PURCHASE_NOT_FOUND));
             purchase.updateStatus(status);
             purchaseRepository.save(purchase);
+
+            Consumer consumer = purchase.getConsumer();
 
             // public UpdateAlarm createUpdateAlarm(Long consumerId, String productName, Status status)
             alarmService.createUpdateAlarm(consumer.getId(), purchase.getProduct().getTitle(), status);
