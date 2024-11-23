@@ -1,10 +1,10 @@
 package org.anyonetoo.anyonetoo.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.mypage.ProductResponseDTO;
-import org.anyonetoo.anyonetoo.domain.dto.mypage.PurchaseResponseDTO;
-import org.anyonetoo.anyonetoo.domain.dto.mypage.StatusResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.res.ProductResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.res.PurchaseResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.mypage.res.StatusResponseDTO;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductSummaryResponseDto;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.domain.enums.Status;
 import org.anyonetoo.anyonetoo.service.MypageService;
@@ -43,7 +43,6 @@ public class MypageController {
 
         mypageService.updateStatus(purchaseId, status, userId);
         return ResponseEntity.ok("상태 변경 완료");
-
     }
 
     @GetMapping("/{purchaseId}")
@@ -53,11 +52,10 @@ public class MypageController {
     }
 
     @GetMapping("/allproduct")
-    public ResponseEntity<List<ProductResponseDTO>> showAllProduct(@AuthenticationPrincipal User user){
-        Long sellerId = user.getSeller().getId();
-
-        List<ProductResponseDTO> allProduct = productService.showAllProducts(sellerId);
-        return ResponseEntity.ok(allProduct);
+    public ResponseEntity<List<ProductSummaryResponseDto>> getSellerProducts(
+            @AuthenticationPrincipal User user) {
+        List<ProductSummaryResponseDto> products = productService.getSellerProducts(user.getSeller().getId());
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/allpurchase/seller/{productId}")

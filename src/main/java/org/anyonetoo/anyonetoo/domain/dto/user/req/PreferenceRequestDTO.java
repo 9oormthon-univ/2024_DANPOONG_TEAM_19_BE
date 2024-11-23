@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.user;
+package org.anyonetoo.anyonetoo.domain.dto.user.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

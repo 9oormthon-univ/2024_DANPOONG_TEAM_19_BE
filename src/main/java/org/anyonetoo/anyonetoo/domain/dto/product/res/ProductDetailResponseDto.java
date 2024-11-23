@@ -1,18 +1,16 @@
-package org.anyonetoo.anyonetoo.domain.dto.res;
+package org.anyonetoo.anyonetoo.domain.dto.product.res;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import org.anyonetoo.anyonetoo.domain.entity.Image;
 import org.anyonetoo.anyonetoo.domain.entity.Product;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Schema(description = "특정 상품 DTO - 정보")
 @Getter
 @Builder
-public class ProductDetailDto {
+public class ProductDetailResponseDto {
 
     @Schema(description = "상품 PK", example = "1")
     private Long productId;
@@ -32,8 +30,8 @@ public class ProductDetailDto {
     @Schema(description = "판매자 이름", example = "김옥자")
     private String sellerName;
 
-    public static ProductDetailDto from(Product product, List<String> preSignedUrls) {
-        return ProductDetailDto.builder()
+    public static ProductDetailResponseDto from(Product product, List<String> preSignedUrls) {
+        return ProductDetailResponseDto.builder()
                 .productId(product.getProductId())
                 .title(product.getTitle())
                 .content(product.getContent())

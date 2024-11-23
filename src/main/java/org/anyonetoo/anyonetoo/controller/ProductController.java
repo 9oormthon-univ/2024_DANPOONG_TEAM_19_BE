@@ -3,14 +3,16 @@ package org.anyonetoo.anyonetoo.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.product.ProductSaveResponseDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.MainCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.ProductRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.SubCommentRequestDto;
-import org.anyonetoo.anyonetoo.domain.dto.req.UpdateCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.res.SubCommentResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductSaveResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.MainCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.req.ProductRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.SubCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.comment.req.UpdateCommentRequestDto;
+import org.anyonetoo.anyonetoo.domain.dto.product.res.ProductSummaryResponseDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.*;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.ProductService;
@@ -36,7 +38,7 @@ public class ProductController {
         @ApiResponse(responseCode = "200", description = "전체 상품 조회 성공")
     })
     @GetMapping("/all")
-    public ResponseEntity<ResponseDto<List<ProductSummaryDto>>> getAllProduct(){
+    public ResponseEntity<ResponseDto<List<ProductSummaryResponseDto>>> getAllProduct(){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.getAllProduct(), "전체 상품 조회 성공"));
     }
 
@@ -74,7 +76,7 @@ public class ProductController {
         @ApiResponse(responseCode = "200", description = "상품 검색 성공")
     })
     @GetMapping
-    public ResponseEntity<ResponseDto<List<ProductSummaryDto>>> searchProduct(@RequestParam String keyword){
+    public ResponseEntity<ResponseDto<List<ProductSummaryResponseDto>>> searchProduct(@RequestParam String keyword){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(productService.searchProduct(keyword), "키워드로 상품 조회 성공"));
     }
 

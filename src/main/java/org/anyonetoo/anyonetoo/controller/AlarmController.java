@@ -4,8 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.anyonetoo.anyonetoo.domain.dto.alarm.AlarmResponseDto;
-import org.anyonetoo.anyonetoo.domain.dto.alarm.OrderAlarmResponseDto;
+import org.anyonetoo.anyonetoo.domain.dto.alarm.res.AlarmResponseDto;
 import org.anyonetoo.anyonetoo.domain.dto.res.ResponseDto;
 import org.anyonetoo.anyonetoo.domain.entity.User;
 import org.anyonetoo.anyonetoo.service.AlarmService;
@@ -33,5 +32,4 @@ public class AlarmController {
     public ResponseEntity<ResponseDto<List<AlarmResponseDto>>> getAlarms(@AuthenticationPrincipal User user){
      return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(alarmService.getAlarms(user), "알람 불러오기 성공"));
     }
-
 }

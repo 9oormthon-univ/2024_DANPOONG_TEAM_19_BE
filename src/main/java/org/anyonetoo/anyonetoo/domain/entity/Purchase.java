@@ -40,7 +40,6 @@ public class Purchase extends BaseEntity {
     public void updateStatus(Status newStatus) {
         if (this.status != newStatus) {
             this.status = newStatus;
-
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.res;
+package org.anyonetoo.anyonetoo.domain.dto.product.res;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import org.anyonetoo.anyonetoo.domain.entity.Product;
 @Schema(description = "전체 상품 조회 Response DTO")
 @Getter
 @Builder
-public class ProductSummaryDto {
+public class ProductSummaryResponseDto {
 
     @Schema(description = "상품 PK", example = "1")
     private Long productId;
@@ -25,8 +25,8 @@ public class ProductSummaryDto {
     @Schema(description = "판매자 이름", example = "김옥자")
     private String sellerName;
 
-    public static ProductSummaryDto from(Product product, String preSignedUrl) {
-        return ProductSummaryDto.builder()
+    public static ProductSummaryResponseDto from(Product product, String preSignedUrl) {
+        return ProductSummaryResponseDto.builder()
                 .productId(product.getProductId())
                 .title(product.getTitle())
                 .price(product.getPrice())

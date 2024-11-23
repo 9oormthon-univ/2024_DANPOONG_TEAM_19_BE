@@ -1,4 +1,4 @@
-package org.anyonetoo.anyonetoo.domain.dto.alarm;
+package org.anyonetoo.anyonetoo.domain.dto.alarm.res;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

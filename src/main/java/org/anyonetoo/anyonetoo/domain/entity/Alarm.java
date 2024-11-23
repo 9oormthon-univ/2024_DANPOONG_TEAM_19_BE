@@ -15,12 +15,6 @@ import org.anyonetoo.anyonetoo.domain.common.BaseEntity;
 @Table(name = "Alarm")
 public class Alarm extends BaseEntity {
 
-    /**
-     * 구매요청 알림
-     * 구매요청 보낸 사람의 이름 = consumerName
-     * 구매요청 받은 사람의 아이디 = sellerId
-     * 구매요청 대상 상품 이름 = productName
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long alarmId;
@@ -33,7 +27,6 @@ public class Alarm extends BaseEntity {
 
     @Column(nullable = false)
     private String productName;
-
 
     @Builder
     public Alarm(String consumerName, Long sellerId, String productName) {
