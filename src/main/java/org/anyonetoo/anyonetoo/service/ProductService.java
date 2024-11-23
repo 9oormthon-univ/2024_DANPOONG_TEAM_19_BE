@@ -115,7 +115,7 @@ public class ProductService {
 
     @Transactional
     public ProductSaveResponseDto saveProduct(Long userId, ProductRequestDto request) {
-        Seller seller = sellerRepository.findById(userId)
+        Seller seller = sellerRepository.findByUserId(userId)
                 .orElseThrow(() -> new RestApiException(CustomErrorCode.SELLER_NOT_FOUND));
 
         Product product = Product.builder()
