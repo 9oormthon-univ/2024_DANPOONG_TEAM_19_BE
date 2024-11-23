@@ -31,7 +31,7 @@ public class MainCommentResponseDto {
         return MainCommentResponseDto.builder()
                 .commentId(comment.getCommentId())
                 .productId(comment.getProduct().getProductId())
-                .username(comment.getProduct().getSeller().getName())
+                .username(comment.getUser().getUsername())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt())
                 .build();
